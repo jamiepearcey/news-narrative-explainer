@@ -41,6 +41,7 @@ class FetchGdeltBigQueryCandidatesTests(unittest.TestCase):
         self.assertIn("Quotations AS quotations", sql)
         self.assertIn("TO_JSON_STRING(STRUCT", sql)
         self.assertIn("LIMIT 50000", sql)
+        self.assertNotIn("ORDER BY DATE DESC", sql)
         self.assertIn("COUNT(*) AS total_rows", count_sql)
 
     def test_output_path_is_hive_partitioned(self) -> None:

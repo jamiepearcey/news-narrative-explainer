@@ -150,8 +150,7 @@ SELECT
 FROM `gdelt-bq.gdeltv2.gkg_partitioned`
 WHERE _PARTITIONTIME >= TIMESTAMP('{bq_timestamp(start)}')
   AND _PARTITIONTIME < TIMESTAMP('{bq_timestamp(end)}')
-  AND REGEXP_CONTAINS(IFNULL(V2Themes, ''), r'{theme_pattern}')
-ORDER BY DATE DESC, DocumentIdentifier ASC{limit_clause}
+  AND REGEXP_CONTAINS(IFNULL(V2Themes, ''), r'{theme_pattern}'){limit_clause}
 """.strip()
 
 
