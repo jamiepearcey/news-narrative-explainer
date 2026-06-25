@@ -4,14 +4,19 @@
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import os
+import re
 import shutil
 import sys
 import tempfile
 from contextlib import nullcontext
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlparse
+from urllib.request import Request, urlopen
 from typing import Any
 
 
@@ -19,6 +24,11 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT_ROOT = ROOT / "data" / "gdelt_candidates"
 DEFAULT_LOOKBACK_HOURS = 24
 DEFAULT_MAX_RESULTS = 50_000
+DEFAULT_ENRICH_MAX_DOCS = 100
+DEFAULT_HTTP_TIMEOUT = 10.0
+DEFAULT_USER_AGENT = (
+    "news-narrative-explainer/0.1 (+https://github.com/jamiepearcey/news-narrative-explainer)"
+)
 DEFAULT_THEME_PATTERN = (
     r"ECON_|BANKING|BANK_|CENTRAL_BANK|INFLATION|INTEREST_RATE|RATE_|GDP|"
     r"UNEMPLOYMENT|LABOR|LABOUR|RECESSION|DEBT|DEFAULT|LIQUIDITY|CREDIT|"
@@ -34,11 +44,12 @@ def ensure_dependencies() -> None:
         import google.cloud.bigquery  # noqa: F401
         import pyarrow  # noqa: F401
         import pyarrow.parquet  # noqa: F401
+        import bs4  # noqa: F401
     except ModuleNotFoundError:
         uv = shutil.which("uv") or "/opt/homebrew/bin/uv"
         if not Path(uv).exists():
             raise RuntimeError(
-                "google-cloud-bigquery and pyarrow are required, and `uv` was not found "
+                "google-cloud-bigquery, pyarrow, and beautifulsoup4 are required, and `uv` was not found "
                 "to bootstrap them"
             ) from None
         if os.environ.get("NEWS_NARRATIVE_FETCH_UV_BOOTSTRAPPED") == "1":
@@ -54,6 +65,8 @@ def ensure_dependencies() -> None:
                 "google-cloud-bigquery>=3.25",
                 "--with",
                 "pyarrow>=16",
+                "--with",
+                "beautifulsoup4>=4.12",
                 str(Path(__file__).resolve()),
                 *sys.argv[1:],
             ],
@@ -156,6 +169,164 @@ def estimate_parquet_size(rows: int, bytes_processed: int | None) -> dict[str, A
     }
 
 
+def clean_text(value: str | None) -> str | None:
+    if not value:
+        return None
+    value = html.unescape(value)
+    value = re.sub(r"\s+", " ", value).strip()
+    return value or None
+
+
+def clip_text(value: str | None, limit: int) -> str | None:
+    cleaned = clean_text(value)
+    if not cleaned:
+        return None
+    if len(cleaned) <= limit:
+        return cleaned
+    clipped = cleaned[:limit].rsplit(" ", 1)[0].strip()
+    return clipped + "..."
+
+
+def allowed_url(url: str) -> bool:
+    parsed = urlparse(url)
+    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
+
+def fetch_html(url: str, timeout: float, user_agent: str) -> str | None:
+    if not allowed_url(url):
+        return None
+    request = Request(url, headers={"User-Agent": user_agent})
+    try:
+        with urlopen(request, timeout=timeout) as response:
+            content_type = response.headers.get("Content-Type", "")
+            if "html" not in content_type.lower():
+                return None
+            payload = response.read()
+            charset = response.headers.get_content_charset() or "utf-8"
+            return payload.decode(charset, errors="replace")
+    except (HTTPError, URLError, TimeoutError, ValueError):
+        return None
+
+
+def extract_article_fields(html_text: str) -> dict[str, str | None]:
+    try:
+        from bs4 import BeautifulSoup
+    except ModuleNotFoundError:
+        og_title_match = re.search(
+            r'<meta[^>]+property=["\']og:title["\'][^>]+content=["\'](.*?)["\']',
+            html_text,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+        title_match = re.search(r"<title[^>]*>(.*?)</title>", html_text, flags=re.IGNORECASE | re.DOTALL)
+        desc_match = re.search(
+            r'<meta[^>]+name=["\']description["\'][^>]+content=["\'](.*?)["\']',
+            html_text,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+        paragraph_matches = re.findall(r"<p[^>]*>(.*?)</p>", html_text, flags=re.IGNORECASE | re.DOTALL)
+        paragraphs = [clean_text(re.sub(r"<[^>]+>", " ", chunk)) for chunk in paragraph_matches]
+        paragraphs = [text for text in paragraphs if text and len(text) >= 40]
+        body_text = clean_text("\n".join(paragraphs)) if paragraphs else None
+        summary = clean_text(desc_match.group(1)) if desc_match else None
+        if not summary and paragraphs:
+            summary = clip_text(paragraphs[0], 320)
+        return {
+            "title": clip_text(
+                clean_text(og_title_match.group(1)) if og_title_match else clean_text(title_match.group(1)) if title_match else None,
+                300,
+            ),
+            "summary": clip_text(summary, 600),
+            "text": clip_text(body_text, 20_000),
+        }
+
+    soup = BeautifulSoup(html_text, "html.parser")
+    for tag in soup(["script", "style", "noscript"]):
+        tag.decompose()
+
+    title = None
+    title_candidates = [
+        soup.find("meta", property="og:title"),
+        soup.find("meta", attrs={"name": "twitter:title"}),
+        soup.find("meta", attrs={"name": "title"}),
+    ]
+    for candidate in title_candidates:
+        if candidate and candidate.get("content"):
+            title = clean_text(candidate.get("content"))
+            if title:
+                break
+    if not title and soup.title and soup.title.string:
+        title = clean_text(soup.title.string)
+    if not title:
+        h1 = soup.find("h1")
+        title = clean_text(h1.get_text(" ", strip=True)) if h1 else None
+
+    summary = None
+    summary_candidates = [
+        soup.find("meta", attrs={"name": "description"}),
+        soup.find("meta", property="og:description"),
+        soup.find("meta", attrs={"name": "twitter:description"}),
+    ]
+    for candidate in summary_candidates:
+        if candidate and candidate.get("content"):
+            summary = clean_text(candidate.get("content"))
+            if summary:
+                break
+
+    container = soup.find("article") or soup.find("main") or soup.body
+    paragraphs: list[str] = []
+    if container:
+        for node in container.find_all(["p", "h2", "li"], limit=120):
+            text = clean_text(node.get_text(" ", strip=True))
+            if text and len(text) >= 40:
+                paragraphs.append(text)
+    body_text = clean_text("\n".join(paragraphs)) if paragraphs else None
+    if not summary and paragraphs:
+        summary = clip_text(paragraphs[0], 320)
+
+    return {
+        "title": clip_text(title, 300),
+        "summary": clip_text(summary, 600),
+        "text": clip_text(body_text, 20_000),
+    }
+
+
+def enrich_rows(
+    rows: list[dict[str, Any]],
+    enrich_max_docs: int,
+    timeout: float,
+    user_agent: str,
+) -> dict[str, Any]:
+    fetched = 0
+    enriched = 0
+    cache: dict[str, dict[str, str | None]] = {}
+    for row in rows:
+        if fetched >= enrich_max_docs:
+            break
+        url = row.get("document_identifier")
+        if not isinstance(url, str) or not allowed_url(url):
+            continue
+        if url not in cache:
+            html_text = fetch_html(url, timeout=timeout, user_agent=user_agent)
+            cache[url] = extract_article_fields(html_text) if html_text else {
+                "title": None,
+                "summary": None,
+                "text": None,
+            }
+            fetched += 1
+        fields = cache[url]
+        if fields["title"] or fields["summary"] or fields["text"]:
+            row["title"] = fields["title"]
+            row["summary"] = fields["summary"]
+            row["text"] = fields["text"]
+            enriched += 1
+    return {
+        "requested_docs": enrich_max_docs,
+        "attempted_fetches": fetched,
+        "rows_enriched": enriched,
+        "unique_urls_seen": len(cache),
+    }
+
+
 def fetch_to_parquet(args: argparse.Namespace) -> dict[str, Any]:
     ensure_dependencies()
     from google.cloud import bigquery
@@ -201,6 +372,14 @@ def fetch_to_parquet(args: argparse.Namespace) -> dict[str, Any]:
         rows = [dict(row.items()) for row in rows_iter]
     if args.dry_run:
         raise AssertionError("unreachable dry-run branch")
+    enrichment_summary = None
+    if args.enrich_text and rows:
+        enrichment_summary = enrich_rows(
+            rows,
+            enrich_max_docs=args.enrich_max_docs,
+            timeout=args.http_timeout,
+            user_agent=args.user_agent,
+        )
     schema = [
         ("record_datetime", pa.string()),
         ("partition_date", pa.string()),
@@ -247,6 +426,7 @@ def fetch_to_parquet(args: argparse.Namespace) -> dict[str, Any]:
         "output_path": str(path),
         "total_bytes_processed": job.total_bytes_processed,
         "size_estimate": estimate_parquet_size(len(rows), job.total_bytes_processed),
+        "text_enrichment": enrichment_summary,
     }
 
 
@@ -282,6 +462,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--end", help="UTC ISO timestamp. Defaults to now when --start is set.")
     parser.add_argument("--theme-pattern", default=DEFAULT_THEME_PATTERN)
     parser.add_argument("--max-results", type=int, default=DEFAULT_MAX_RESULTS)
+    parser.add_argument("--enrich-text", action="store_true")
+    parser.add_argument("--enrich-max-docs", type=int, default=DEFAULT_ENRICH_MAX_DOCS)
+    parser.add_argument("--http-timeout", type=float, default=DEFAULT_HTTP_TIMEOUT)
+    parser.add_argument("--user-agent", default=DEFAULT_USER_AGENT)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--print-query", action="store_true")
     return parser.parse_args()
@@ -292,6 +476,8 @@ def main() -> int:
     args.project = resolve_project(args.project, args.service_account_json)
     if args.max_results is not None and args.max_results <= 0:
         raise SystemExit("--max-results must be positive")
+    if args.enrich_max_docs <= 0:
+        raise SystemExit("--enrich-max-docs must be positive")
     if args.start and args.end and parse_datetime(args.start) >= parse_datetime(args.end):
         raise SystemExit("--start must be before --end")
 

@@ -5,12 +5,21 @@ import sys
 import unittest
 from datetime import UTC, datetime
 from pathlib import Path
+from unittest import mock
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from fetch_gdelt_bigquery_candidates import build_query, estimate_parquet_size, output_path, resolve_project
+from fetch_gdelt_bigquery_candidates import (
+    build_query,
+    clean_text,
+    enrich_rows,
+    estimate_parquet_size,
+    extract_article_fields,
+    output_path,
+    resolve_project,
+)
 
 
 class FetchGdeltBigQueryCandidatesTests(unittest.TestCase):
@@ -50,6 +59,46 @@ class FetchGdeltBigQueryCandidatesTests(unittest.TestCase):
     def test_project_can_come_from_service_account_json(self) -> None:
         self.assertEqual(resolve_project(None, '{"project_id":"demo-project"}'), "demo-project")
         self.assertEqual(resolve_project("explicit-project", '{"project_id":"demo-project"}'), "explicit-project")
+
+    def test_extract_article_fields_prefers_title_description_and_article_text(self) -> None:
+        html = """
+        <html>
+          <head>
+            <title>Fallback title</title>
+            <meta property="og:title" content="Actual article title" />
+            <meta name="description" content="Short summary for the article." />
+          </head>
+          <body>
+            <article>
+              <p>This is the first paragraph with enough substance to be useful.</p>
+              <p>This is the second paragraph adding more context for the explainer.</p>
+            </article>
+          </body>
+        </html>
+        """
+        fields = extract_article_fields(html)
+        self.assertEqual(fields["title"], "Actual article title")
+        self.assertEqual(fields["summary"], "Short summary for the article.")
+        self.assertIn("first paragraph", fields["text"])
+
+    def test_enrich_rows_populates_text_fields(self) -> None:
+        rows = [
+            {"document_identifier": "https://example.com/story", "title": None, "summary": None, "text": None}
+        ]
+        with mock.patch(
+            "fetch_gdelt_bigquery_candidates.fetch_html",
+            return_value="""
+            <html><head><title>Example story</title></head>
+            <body><article><p>Useful article body text for enrichment.</p></article></body></html>
+            """,
+        ):
+            stats = enrich_rows(rows, enrich_max_docs=5, timeout=5.0, user_agent="ua")
+        self.assertEqual(stats["rows_enriched"], 1)
+        self.assertEqual(rows[0]["title"], "Example story")
+        self.assertIn("Useful article body text", rows[0]["text"])
+
+    def test_clean_text_normalizes_whitespace(self) -> None:
+        self.assertEqual(clean_text("  one \n two\tthree "), "one two three")
 
 
 if __name__ == "__main__":

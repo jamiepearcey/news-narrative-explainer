@@ -121,6 +121,28 @@ data/gdelt_candidates/dt=YYYY-MM-DD/part-YYYYMMDDTHHMMSSZ-bigquery.parquet
 
 ## Build
 
+Pull a fresh standalone parquet from BigQuery:
+
+```bash
+python3 scripts/fetch_gdelt_bigquery_candidates.py \
+  --project your-gcp-project \
+  --lookback-hours 6 \
+  --max-results 5000
+```
+
+Pull a fresh parquet and enrich a bounded number of URLs with title/summary/text:
+
+```bash
+python3 scripts/fetch_gdelt_bigquery_candidates.py \
+  --project your-gcp-project \
+  --lookback-hours 6 \
+  --max-results 1000 \
+  --enrich-text \
+  --enrich-max-docs 100
+```
+
+Then build the local narrative graph from the standalone parquet:
+
 ```bash
 cd news-narrative-explainer
 python3 scripts/build_narrative_graph.py \
