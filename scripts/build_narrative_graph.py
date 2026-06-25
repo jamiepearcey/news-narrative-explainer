@@ -611,18 +611,21 @@ def build_narrative_graph(
             factor_label,
             geo_id,
             geo_label,
-            COUNT(*)::INTEGER AS news_count,
+            COUNT(DISTINCT doc_id)::INTEGER AS doc_count,
+            COUNT(*)::INTEGER AS mention_count,
             COUNT(DISTINCT source_id)::INTEGER AS unique_sources,
+            COUNT(DISTINCT geo_id)::INTEGER AS geo_count,
             AVG(tone) AS tone_mean,
+            AVG(abs(COALESCE(tone, 0.0))) AS avg_abs_tone,
             AVG(novelty) AS novelty_mean,
-            SUM(CASE WHEN tone <= -5 THEN 1 ELSE 0 END)::INTEGER AS negative_tail_count,
-            SUM(CASE WHEN tone >= 5 THEN 1 ELSE 0 END)::INTEGER AS positive_tail_count,
+            COUNT(DISTINCT CASE WHEN tone <= -5 THEN doc_id ELSE NULL END)::INTEGER AS negative_tail_count,
+            COUNT(DISTINCT CASE WHEN tone >= 5 THEN doc_id ELSE NULL END)::INTEGER AS positive_tail_count,
             AVG(classification_confidence) AS confidence_mean,
             MIN(event_time) AS first_seen,
             MAX(event_time) AS last_seen,
             CASE
-                WHEN COUNT(*) = 0 THEN NULL
-                ELSE CAST(COUNT(DISTINCT source_id) AS DOUBLE) / CAST(COUNT(*) AS DOUBLE)
+                WHEN COUNT(DISTINCT doc_id) = 0 THEN NULL
+                ELSE CAST(COUNT(DISTINCT source_id) AS DOUBLE) / CAST(COUNT(DISTINCT doc_id) AS DOUBLE)
             END AS source_dispersion
         FROM silver_factor_mentions
         GROUP BY 1, 2, 3, 4, 5
@@ -652,20 +655,26 @@ def build_narrative_graph(
             factor_label,
             geo_id,
             geo_label,
-            news_count,
+            doc_count,
+            mention_count,
             unique_sources,
+            geo_count,
             tone_mean,
             CASE
                 WHEN tone_mean_30d_std IS NULL OR tone_mean_30d_std = 0 THEN NULL
                 ELSE (tone_mean - tone_mean_30d_avg) / tone_mean_30d_std
             END AS tone_zscore_30d,
+            avg_abs_tone,
             novelty_mean,
             negative_tail_count,
             positive_tail_count,
             source_dispersion,
             confidence_mean,
             first_seen,
-            last_seen
+            last_seen,
+            CAST(doc_count AS DOUBLE)
+                * (0.5 + COALESCE(source_dispersion, 0.0))
+                * (1.0 + (COALESCE(avg_abs_tone, 0.0) / 5.0)) AS narrative_score
         FROM roll
         """
     )
@@ -680,14 +689,17 @@ def build_narrative_graph(
             asset_label,
             geo_id,
             geo_label,
-            COUNT(*)::INTEGER AS news_count,
+            COUNT(DISTINCT doc_id)::INTEGER AS doc_count,
+            COUNT(*)::INTEGER AS mention_count,
             COUNT(DISTINCT source_id)::INTEGER AS unique_sources,
+            COUNT(DISTINCT geo_id)::INTEGER AS geo_count,
             AVG(tone) AS tone_mean,
+            AVG(abs(COALESCE(tone, 0.0))) AS avg_abs_tone,
             AVG(novelty) AS novelty_mean,
             AVG(classification_confidence) AS confidence,
             CASE
-                WHEN COUNT(*) = 0 THEN NULL
-                ELSE CAST(COUNT(DISTINCT source_id) AS DOUBLE) / CAST(COUNT(*) AS DOUBLE)
+                WHEN COUNT(DISTINCT doc_id) = 0 THEN NULL
+                ELSE CAST(COUNT(DISTINCT source_id) AS DOUBLE) / CAST(COUNT(DISTINCT doc_id) AS DOUBLE)
             END AS source_dispersion
         FROM silver_asset_factor_mentions
         GROUP BY 1, 2, 3, 4, 5, 6, 7
@@ -719,17 +731,23 @@ def build_narrative_graph(
             factor_label,
             geo_id,
             geo_label,
-            news_count,
+            doc_count,
+            mention_count,
             unique_sources,
+            geo_count,
             tone_mean,
             CASE
                 WHEN tone_mean_30d_std IS NULL OR tone_mean_30d_std = 0 THEN NULL
                 ELSE (tone_mean - tone_mean_30d_avg) / tone_mean_30d_std
             END AS tone_zscore_30d,
+            avg_abs_tone,
             novelty_mean,
-            CAST(news_count AS DOUBLE) * COALESCE(source_dispersion, 0.0) AS event_intensity,
+            CAST(doc_count AS DOUBLE) * COALESCE(source_dispersion, 0.0) AS event_intensity,
             source_dispersion,
-            confidence
+            confidence,
+            CAST(doc_count AS DOUBLE)
+                * (0.5 + COALESCE(source_dispersion, 0.0))
+                * (1.0 + (COALESCE(avg_abs_tone, 0.0) / 5.0)) AS narrative_score
         FROM roll
         """
     )

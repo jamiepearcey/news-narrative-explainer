@@ -78,12 +78,14 @@ def query_top_factors(db_path: Path, limit: int) -> list[dict[str, Any]]:
         """
         SELECT
             factor_label,
-            SUM(news_count) AS news_count,
+            SUM(doc_count) AS doc_count,
+            SUM(mention_count) AS mention_count,
             AVG(source_dispersion) AS avg_source_dispersion,
-            AVG(tone_mean) AS avg_tone_mean
+            AVG(tone_mean) AS avg_tone_mean,
+            AVG(narrative_score) AS avg_narrative_score
         FROM gold_factor_buckets_daily
         GROUP BY factor_label
-        ORDER BY news_count DESC, factor_label ASC
+        ORDER BY doc_count DESC, avg_narrative_score DESC, factor_label ASC
         LIMIT ?
         """,
         [limit],
@@ -96,12 +98,14 @@ def query_top_assets(db_path: Path, limit: int) -> list[dict[str, Any]]:
         """
         SELECT
             asset_label,
-            SUM(news_count) AS news_count,
+            SUM(doc_count) AS doc_count,
+            SUM(mention_count) AS mention_count,
             AVG(source_dispersion) AS avg_source_dispersion,
-            AVG(event_intensity) AS avg_event_intensity
+            AVG(event_intensity) AS avg_event_intensity,
+            AVG(narrative_score) AS avg_narrative_score
         FROM gold_asset_factor_panel_daily
         GROUP BY asset_label
-        ORDER BY news_count DESC, asset_label ASC
+        ORDER BY doc_count DESC, avg_narrative_score DESC, asset_label ASC
         LIMIT ?
         """,
         [limit],
@@ -115,16 +119,19 @@ def query_factor_daily(db_path: Path, factor_label: str, limit: int) -> list[dic
         SELECT
             bucket_time,
             geo_label,
-            news_count,
+            doc_count,
+            mention_count,
             unique_sources,
             tone_mean,
             tone_zscore_30d,
+            avg_abs_tone,
             novelty_mean,
             source_dispersion,
-            confidence_mean
+            confidence_mean,
+            narrative_score
         FROM gold_factor_buckets_daily
         WHERE factor_label = ?
-        ORDER BY bucket_time DESC, news_count DESC, geo_label ASC
+        ORDER BY bucket_time DESC, narrative_score DESC, geo_label ASC
         LIMIT ?
         """,
         [factor_label, limit],
@@ -139,16 +146,18 @@ def query_tone_tails(db_path: Path, limit: int) -> list[dict[str, Any]]:
             factor_label,
             geo_label,
             bucket_time,
-            news_count,
+            doc_count,
+            mention_count,
             negative_tail_count,
             positive_tail_count,
             tone_mean,
-            source_dispersion
+            source_dispersion,
+            narrative_score
         FROM gold_factor_buckets_daily
         ORDER BY
             negative_tail_count DESC,
             positive_tail_count DESC,
-            news_count DESC,
+            narrative_score DESC,
             factor_label ASC
         LIMIT ?
         """,
@@ -166,23 +175,72 @@ def query_asset_narratives(
     return run_query(
         db_path,
         """
+        WITH filtered AS (
+            SELECT *
+            FROM silver_asset_factor_mentions
+            WHERE asset_label = ?
+              AND (? IS NULL OR CAST(event_time AS DATE) >= CAST(? AS DATE))
+              AND (? IS NULL OR CAST(event_time AS DATE) <= CAST(? AS DATE))
+        ),
+        dedup_docs AS (
+            SELECT DISTINCT
+                doc_id,
+                asset_label,
+                factor_label,
+                source_id,
+                CAST(event_time AS DATE) AS bucket_time,
+                tone,
+                classification_confidence
+            FROM filtered
+        ),
+        geo_stats AS (
+            SELECT
+                asset_label,
+                factor_label,
+                COUNT(DISTINCT geo_id)::INTEGER AS geo_count,
+                COUNT(*)::INTEGER AS mention_count
+            FROM filtered
+            GROUP BY asset_label, factor_label
+        )
         SELECT
-            asset_label,
-            factor_label,
-            SUM(news_count) AS news_count,
-            AVG(unique_sources) AS avg_unique_sources,
-            AVG(tone_mean) AS avg_tone_mean,
-            AVG(tone_zscore_30d) AS avg_tone_zscore_30d,
-            AVG(source_dispersion) AS avg_source_dispersion,
-            AVG(event_intensity) AS avg_event_intensity,
-            MIN(bucket_time) AS first_bucket,
-            MAX(bucket_time) AS last_bucket
-        FROM gold_asset_factor_panel_daily
-        WHERE asset_label = ?
-          AND (? IS NULL OR bucket_time >= CAST(? AS DATE))
-          AND (? IS NULL OR bucket_time <= CAST(? AS DATE))
-        GROUP BY asset_label, factor_label
-        ORDER BY news_count DESC, avg_event_intensity DESC, factor_label ASC
+            d.asset_label,
+            d.factor_label,
+            COUNT(*)::INTEGER AS doc_count,
+            g.mention_count,
+            COUNT(DISTINCT d.source_id)::INTEGER AS avg_unique_sources,
+            g.geo_count AS avg_geo_count,
+            AVG(d.tone) AS avg_tone_mean,
+            NULL::DOUBLE AS avg_tone_zscore_30d,
+            AVG(abs(COALESCE(d.tone, 0.0))) AS avg_abs_tone,
+            CASE
+                WHEN COUNT(*) = 0 THEN NULL
+                ELSE CAST(COUNT(DISTINCT d.source_id) AS DOUBLE) / CAST(COUNT(*) AS DOUBLE)
+            END AS avg_source_dispersion,
+            CAST(COUNT(DISTINCT d.source_id) AS DOUBLE) AS avg_event_intensity,
+            CAST(COUNT(*) AS DOUBLE)
+                * (
+                    0.5 + CASE
+                        WHEN COUNT(*) = 0 THEN 0.0
+                        ELSE CAST(COUNT(DISTINCT d.source_id) AS DOUBLE) / CAST(COUNT(*) AS DOUBLE)
+                    END
+                )
+                * (1.0 + (AVG(abs(COALESCE(d.tone, 0.0))) / 5.0)) AS avg_narrative_score,
+            CAST(COUNT(*) AS DOUBLE)
+                * (
+                    0.5 + CASE
+                        WHEN COUNT(*) = 0 THEN 0.0
+                        ELSE CAST(COUNT(DISTINCT d.source_id) AS DOUBLE) / CAST(COUNT(*) AS DOUBLE)
+                    END
+                )
+                * (1.0 + (AVG(abs(COALESCE(d.tone, 0.0))) / 5.0)) AS max_narrative_score,
+            MIN(d.bucket_time) AS first_bucket,
+            MAX(d.bucket_time) AS last_bucket
+        FROM dedup_docs d
+        JOIN geo_stats g
+          ON g.asset_label = d.asset_label
+         AND g.factor_label = d.factor_label
+        GROUP BY d.asset_label, d.factor_label, g.mention_count, g.geo_count
+        ORDER BY avg_narrative_score DESC, doc_count DESC, d.factor_label ASC
         LIMIT ?
         """,
         [asset_label, start_date, start_date, end_date, end_date, limit],
@@ -200,24 +258,67 @@ def query_asset_timeline(
     return run_query(
         db_path,
         """
+        WITH filtered AS (
+            SELECT *
+            FROM silver_asset_factor_mentions
+            WHERE asset_label = ?
+              AND (? IS NULL OR factor_label = ?)
+              AND (? IS NULL OR CAST(event_time AS DATE) >= CAST(? AS DATE))
+              AND (? IS NULL OR CAST(event_time AS DATE) <= CAST(? AS DATE))
+        ),
+        dedup_docs AS (
+            SELECT DISTINCT
+                bucket_time,
+                doc_id,
+                asset_label,
+                factor_label,
+                source_id,
+                tone,
+                classification_confidence
+            FROM filtered
+        ),
+        geo_stats AS (
+            SELECT
+                bucket_time,
+                asset_label,
+                factor_label,
+                COUNT(DISTINCT geo_id)::INTEGER AS geo_count,
+                COUNT(*)::INTEGER AS mention_count
+            FROM filtered
+            GROUP BY bucket_time, asset_label, factor_label
+        )
         SELECT
-            bucket_time,
-            asset_label,
-            factor_label,
-            geo_label,
-            news_count,
-            unique_sources,
-            tone_mean,
-            tone_zscore_30d,
-            source_dispersion,
-            event_intensity,
-            confidence
-        FROM gold_asset_factor_panel_daily
-        WHERE asset_label = ?
-          AND (? IS NULL OR factor_label = ?)
-          AND (? IS NULL OR bucket_time >= CAST(? AS DATE))
-          AND (? IS NULL OR bucket_time <= CAST(? AS DATE))
-        ORDER BY bucket_time DESC, news_count DESC, factor_label ASC, geo_label ASC
+            d.bucket_time,
+            d.asset_label,
+            d.factor_label,
+            COUNT(*)::INTEGER AS doc_count,
+            g.mention_count,
+            COUNT(DISTINCT d.source_id)::INTEGER AS unique_sources,
+            g.geo_count,
+            AVG(d.tone) AS tone_mean,
+            NULL::DOUBLE AS tone_zscore_30d,
+            AVG(abs(COALESCE(d.tone, 0.0))) AS avg_abs_tone,
+            CASE
+                WHEN COUNT(*) = 0 THEN NULL
+                ELSE CAST(COUNT(DISTINCT d.source_id) AS DOUBLE) / CAST(COUNT(*) AS DOUBLE)
+            END AS source_dispersion,
+            CAST(COUNT(DISTINCT d.source_id) AS DOUBLE) AS event_intensity,
+            AVG(d.classification_confidence) AS confidence,
+            CAST(COUNT(*) AS DOUBLE)
+                * (
+                    0.5 + CASE
+                        WHEN COUNT(*) = 0 THEN 0.0
+                        ELSE CAST(COUNT(DISTINCT d.source_id) AS DOUBLE) / CAST(COUNT(*) AS DOUBLE)
+                    END
+                )
+                * (1.0 + (AVG(abs(COALESCE(d.tone, 0.0))) / 5.0)) AS narrative_score
+        FROM dedup_docs d
+        JOIN geo_stats g
+          ON g.bucket_time = d.bucket_time
+         AND g.asset_label = d.asset_label
+         AND g.factor_label = d.factor_label
+        GROUP BY d.bucket_time, d.asset_label, d.factor_label, g.mention_count, g.geo_count
+        ORDER BY d.bucket_time DESC, narrative_score DESC, d.factor_label ASC
         LIMIT ?
         """,
         [asset_label, factor_label, factor_label, start_date, start_date, end_date, end_date, limit],

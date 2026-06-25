@@ -24,6 +24,8 @@ It does not rank price-prediction candidates and does not make trading claims.
   Query helper for post-hoc narrative identification.
 - `scripts/render_narrative_brief.py`
   Turns an `explain-move` JSON payload into a markdown note.
+- `scripts/narrative_explainer_mcp.py`
+  Minimal stdio MCP wrapper exposing explanation and summary tools.
 
 ## Expected Input Columns
 
@@ -95,4 +97,26 @@ python3 scripts/render_narrative_brief.py \
 ```bash
 python3 scripts/test_build_narrative_graph.py
 python3 scripts/test_query_narrative_graph.py
+python3 scripts/test_narrative_explainer_mcp.py
 ```
+
+## MCP Wrapper
+
+The standalone folder also includes a minimal MCP-style stdio server for
+explanation workflows:
+
+```bash
+python3 scripts/narrative_explainer_mcp.py
+```
+
+Exposed tools:
+
+- `explain_move`
+  Returns the local factor explanation payload for an asset and date window.
+- `summarize_narrative`
+  Returns a short deterministic text summary built from the local explanation.
+- `supporting_docs`
+  Returns the document list for an asset and optional factor.
+
+The MCP wrapper is intentionally narrow and explanation-oriented. It does not
+expose prediction, lead/lag, or market-ranking tools.
