@@ -7,8 +7,9 @@ import argparse
 import json
 import os
 import shutil
-import subprocess
 import sys
+import tempfile
+from contextlib import nullcontext
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -173,24 +174,33 @@ def fetch_to_parquet(args: argparse.Namespace) -> dict[str, Any]:
         theme_pattern=args.theme_pattern,
         max_results=args.max_results,
     )
-    client = bigquery.Client(project=args.project, location=args.location)
-    job_config = bigquery.QueryJobConfig(
-        dry_run=args.dry_run,
-        use_query_cache=not args.dry_run,
-    )
-    job = client.query(query, job_config=job_config)
-    if args.dry_run:
-        return {
-            "dry_run": True,
-            "start": start.isoformat(),
-            "end": end.isoformat(),
-            "max_results": args.max_results,
-            "total_bytes_processed": job.total_bytes_processed,
-            "query": query,
-        }
+    service_account_json = args.service_account_json
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=True) if service_account_json else nullcontext() as cred_file:
+        if service_account_json:
+            cred_file.write(service_account_json)
+            cred_file.flush()
+            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = cred_file.name
 
-    rows_iter = job.result(max_results=args.max_results)
-    rows = [dict(row.items()) for row in rows_iter]
+        client = bigquery.Client(project=args.project, location=args.location)
+        job_config = bigquery.QueryJobConfig(
+            dry_run=args.dry_run,
+            use_query_cache=not args.dry_run,
+        )
+        job = client.query(query, job_config=job_config)
+        if args.dry_run:
+            return {
+                "dry_run": True,
+                "start": start.isoformat(),
+                "end": end.isoformat(),
+                "max_results": args.max_results,
+                "total_bytes_processed": job.total_bytes_processed,
+                "query": query,
+            }
+
+        rows_iter = job.result(max_results=args.max_results)
+        rows = [dict(row.items()) for row in rows_iter]
+    if args.dry_run:
+        raise AssertionError("unreachable dry-run branch")
     schema = [
         ("record_datetime", pa.string()),
         ("partition_date", pa.string()),
@@ -240,10 +250,32 @@ def fetch_to_parquet(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def resolve_project(project: str | None, service_account_json: str | None) -> str | None:
+    if project:
+        return project
+    if not service_account_json:
+        return None
+    try:
+        payload = json.loads(service_account_json)
+    except json.JSONDecodeError:
+        return None
+    value = payload.get("project_id")
+    return value if isinstance(value, str) and value else None
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--project", default=os.environ.get("GOOGLE_CLOUD_PROJECT"))
+    parser.add_argument(
+        "--project",
+        default=os.environ.get("GOOGLE_CLOUD_PROJECT")
+        or os.environ.get("SOURCE_BIGQUERY_IPC__PROJECT_ID"),
+    )
     parser.add_argument("--location", default="US")
+    parser.add_argument(
+        "--service-account-json",
+        default=os.environ.get("SOURCE_BIGQUERY_IPC__SERVICE_ACCOUNT_JSON"),
+        help="Service account JSON string. Defaults to SOURCE_BIGQUERY_IPC__SERVICE_ACCOUNT_JSON.",
+    )
     parser.add_argument("--output-root", default=str(DEFAULT_OUTPUT_ROOT))
     parser.add_argument("--lookback-hours", type=int, default=DEFAULT_LOOKBACK_HOURS)
     parser.add_argument("--start", help="UTC ISO timestamp, e.g. 2026-06-25T00:00:00Z")
@@ -257,6 +289,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    args.project = resolve_project(args.project, args.service_account_json)
     if args.max_results is not None and args.max_results <= 0:
         raise SystemExit("--max-results must be positive")
     if args.start and args.end and parse_datetime(args.start) >= parse_datetime(args.end):

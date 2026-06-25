@@ -10,7 +10,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-from fetch_gdelt_bigquery_candidates import build_query, estimate_parquet_size, output_path
+from fetch_gdelt_bigquery_candidates import build_query, estimate_parquet_size, output_path, resolve_project
 
 
 class FetchGdeltBigQueryCandidatesTests(unittest.TestCase):
@@ -46,6 +46,10 @@ class FetchGdeltBigQueryCandidatesTests(unittest.TestCase):
         self.assertEqual(estimate["rows"], 50_000)
         self.assertEqual(estimate["bigquery_bytes_processed"], 123)
         self.assertGreater(estimate["estimated_parquet_mb_high"], estimate["estimated_parquet_mb_low"])
+
+    def test_project_can_come_from_service_account_json(self) -> None:
+        self.assertEqual(resolve_project(None, '{"project_id":"demo-project"}'), "demo-project")
+        self.assertEqual(resolve_project("explicit-project", '{"project_id":"demo-project"}'), "explicit-project")
 
 
 if __name__ == "__main__":

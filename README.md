@@ -83,6 +83,17 @@ python3 scripts/fetch_gdelt_bigquery_candidates.py \
   --max-results 50000
 ```
 
+The fetcher also honors the same credential environment used by the old
+`quant-algos` BigQuery connector:
+
+```bash
+SOURCE_BIGQUERY_IPC__PROJECT_ID=...
+SOURCE_BIGQUERY_IPC__SERVICE_ACCOUNT_JSON='{...}'
+```
+
+If `SOURCE_BIGQUERY_IPC__SERVICE_ACCOUNT_JSON` is set and no project is passed,
+the script derives the project from the JSON `project_id` field.
+
 Dry-run BigQuery cost estimate:
 
 ```bash
