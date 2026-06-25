@@ -45,6 +45,9 @@ class QueryNarrativeGraphTests(unittest.TestCase):
                             '2025-01-02',
                             'reuters.com',
                             'https://example.com/fed-inflation',
+                            'Fed officials keep inflation focus',
+                            'Policy signals stayed hawkish after the latest inflation data.',
+                            'Federal Reserve officials said inflation remains too high and rate cuts are not imminent.',
                             'ECON_INFLATION,50;CENTRAL_BANK,50;INTEREST_RATE,30',
                             '-2.5,0,0,0,0,0',
                             '1#United States#US#US#38.0#-77.0#0',
@@ -57,6 +60,9 @@ class QueryNarrativeGraphTests(unittest.TestCase):
                             '2025-01-02',
                             'ft.com',
                             'https://example.com/red-sea-oil',
+                            'Red Sea disruption lifts oil risk premium',
+                            'Shipping interruptions and sanctions concerns pushed oil-linked narratives higher.',
+                            'Tanker disruptions near the Red Sea raised concern about supply routes and near-term crude flows.',
                             'SHIPPING,30;OIL,30;SANCTIONS,10',
                             '-4.0,0,0,0,0,0',
                             '1#Yemen#YM#YM#15.5#47.5#0;1#Egypt#EG#EG#26.0#30.0#0',
@@ -69,6 +75,9 @@ class QueryNarrativeGraphTests(unittest.TestCase):
                     partition_date,
                     source_common_name,
                     document_identifier,
+                    title,
+                    summary,
+                    text,
                     v2_themes,
                     v2_tone,
                     v2_locations,
@@ -136,6 +145,10 @@ class QueryNarrativeGraphTests(unittest.TestCase):
             )
             self.assertEqual(docs[0]["asset_label"], "WTI")
             self.assertIn("example.com/red-sea-oil", docs[0]["document_identifier"])
+            self.assertEqual(docs[0]["title"], "Red Sea disruption lifts oil risk premium")
+            self.assertIn("Shipping interruptions", docs[0]["summary_text"])
+            self.assertIn("Tanker disruptions", docs[0]["body_excerpt"])
+            self.assertIn("OPEC", docs[0]["relevant_text"])
 
             explain = query_explain_move(
                 db_path,

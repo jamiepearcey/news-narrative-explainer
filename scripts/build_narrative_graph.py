@@ -42,6 +42,30 @@ class FactorRule:
     asset_hints: tuple[str, ...]
 
 
+TEXT_TITLE_CANDIDATES = (
+    "title",
+    "article_title",
+    "headline",
+    "source_title",
+)
+TEXT_SUMMARY_CANDIDATES = (
+    "summary",
+    "snippet",
+    "description",
+    "excerpt",
+    "lead",
+    "lead_text",
+)
+TEXT_BODY_CANDIDATES = (
+    "text",
+    "article_text",
+    "body_text",
+    "content",
+    "translated_text",
+    "full_text",
+)
+
+
 def stable_u64(text: str) -> int:
     digest = hashlib.sha256(text.encode("utf-8")).digest()
     return int.from_bytes(digest[:8], "big", signed=False)
@@ -151,6 +175,51 @@ def classification_confidence(match_count: int) -> float:
     return min(0.95, 0.55 + 0.08 * match_count)
 
 
+def input_columns(con: duckdb.DuckDBPyConnection, input_glob: str) -> set[str]:
+    cursor = con.execute(
+        f"SELECT * FROM read_parquet({json.dumps(input_glob)}, union_by_name=true) LIMIT 0"
+    )
+    return {column[0].lower() for column in cursor.description}
+
+
+def first_present(columns: set[str], candidates: tuple[str, ...]) -> str | None:
+    for candidate in candidates:
+        if candidate.lower() in columns:
+            return candidate
+    return None
+
+
+def sql_identifier(name: str) -> str:
+    return '"' + name.replace('"', '""') + '"'
+
+
+def optional_text_expr(column_name: str | None) -> str:
+    if column_name is None:
+        return "NULL"
+    return f"NULLIF(trim(CAST({sql_identifier(column_name)} AS VARCHAR)), '')"
+
+
+def relevant_text_expr(title_expr: str, summary_expr: str, body_expr: str) -> str:
+    return f"""
+        NULLIF(
+            trim(
+                concat_ws(
+                    ' || ',
+                    COALESCE({title_expr}, ''),
+                    COALESCE({summary_expr}, ''),
+                    COALESCE(substr({body_expr}, 1, 4000), ''),
+                    COALESCE(all_names, ''),
+                    COALESCE(v2_organizations, ''),
+                    COALESCE(v2_persons, ''),
+                    COALESCE(v2_themes, ''),
+                    COALESCE(v2_locations, '')
+                )
+            ),
+            ''
+        )
+    """
+
+
 def initialize_schema(con: duckdb.DuckDBPyConnection) -> None:
     con.execute(
         """
@@ -167,6 +236,10 @@ def initialize_schema(con: duckdb.DuckDBPyConnection) -> None:
             v2_persons VARCHAR,
             v2_organizations VARCHAR,
             all_names VARCHAR,
+            title VARCHAR,
+            summary_text VARCHAR,
+            body_text VARCHAR,
+            relevant_text VARCHAR,
             tone DOUBLE
         )
         """
@@ -321,6 +394,11 @@ def build_narrative_graph(
     rules = load_taxonomy(taxonomy_path)
     con = duckdb.connect(str(output_db))
     initialize_schema(con)
+    columns = input_columns(con, input_glob)
+    title_expr = optional_text_expr(first_present(columns, TEXT_TITLE_CANDIDATES))
+    summary_expr = optional_text_expr(first_present(columns, TEXT_SUMMARY_CANDIDATES))
+    body_expr = optional_text_expr(first_present(columns, TEXT_BODY_CANDIDATES))
+    relevant_expr = relevant_text_expr(title_expr, summary_expr, body_expr)
     con.executemany(
         "INSERT INTO factor_dictionary VALUES (?, ?, ?)",
         [(rule.factor_id, rule.label, rule.group) for rule in rules],
@@ -386,8 +464,12 @@ def build_narrative_graph(
             v2_persons,
             v2_organizations,
             all_names,
+            {title_expr} AS title,
+            {summary_expr} AS summary_text,
+            {body_expr} AS body_text,
+            {relevant_expr} AS relevant_text,
             try_cast(regexp_extract(COALESCE(v2_tone, ''), '^\\s*(-?[0-9]+(?:\\.[0-9]+)?)', 1) AS DOUBLE) AS tone
-        FROM read_parquet({json.dumps(input_glob)})
+        FROM read_parquet({json.dumps(input_glob)}, union_by_name=true)
         """
     )
     con.execute(

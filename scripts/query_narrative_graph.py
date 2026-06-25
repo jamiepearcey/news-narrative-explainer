@@ -342,6 +342,13 @@ def query_supporting_docs(
             m.factor_label,
             m.geo_label,
             m.source_domain,
+            b.title,
+            b.summary_text,
+            CASE
+                WHEN b.body_text IS NULL THEN NULL
+                ELSE substr(b.body_text, 1, 1200)
+            END AS body_excerpt,
+            b.relevant_text,
             b.document_identifier,
             b.tone,
             m.classification_confidence

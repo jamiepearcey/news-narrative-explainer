@@ -42,6 +42,16 @@ Input parquet should contain:
 - `v2_organizations`
 - `all_names`
 
+Optional text-bearing columns are consumed when present:
+
+- `title` or `article_title` or `headline`
+- `summary` or `snippet` or `description`
+- `text` or `article_text` or `body_text` or `content`
+
+When those fields are present, the local graph stores them directly and also
+builds a `relevant_text` field that blends article text with names, themes,
+organizations, and locations for post-hoc narrative review.
+
 ## Build
 
 ```bash

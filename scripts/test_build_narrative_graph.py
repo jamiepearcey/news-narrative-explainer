@@ -61,6 +61,9 @@ class NarrativeGraphTests(unittest.TestCase):
                                 '2025-01-02',
                                 'reuters.com',
                                 'https://example.com/fed-inflation',
+                                'Fed officials keep inflation focus',
+                                'Policy signals stayed hawkish after the latest inflation data.',
+                                'Federal Reserve officials said inflation remains too high and rate cuts are not imminent.',
                                 'ECON_INFLATION,50;CENTRAL_BANK,50;INTEREST_RATE,30',
                                 '-2.5,0,0,0,0,0',
                                 '1#United States#US#US#38.0#-77.0#0',
@@ -73,6 +76,9 @@ class NarrativeGraphTests(unittest.TestCase):
                                 '2025-01-02',
                                 'ft.com',
                                 'https://example.com/red-sea-oil',
+                                'Red Sea disruption lifts oil risk premium',
+                                'Shipping interruptions and sanctions concerns pushed oil-linked narratives higher.',
+                                'Tanker disruptions near the Red Sea raised concern about supply routes and near-term crude flows.',
                                 'SHIPPING,30;OIL,30;SANCTIONS,10',
                                 '-4.0,0,0,0,0,0',
                                 '1#Yemen#YM#YM#15.5#47.5#0;1#Egypt#EG#EG#26.0#30.0#0',
@@ -85,6 +91,9 @@ class NarrativeGraphTests(unittest.TestCase):
                         partition_date,
                         source_common_name,
                         document_identifier,
+                        title,
+                        summary,
+                        text,
                         v2_themes,
                         v2_tone,
                         v2_locations,
@@ -125,6 +134,17 @@ class NarrativeGraphTests(unittest.TestCase):
             }
             self.assertIn("US2Y", asset_labels)
             self.assertIn("WTI", asset_labels)
+            rich_text = out.execute(
+                """
+                SELECT title, summary_text, body_text, relevant_text
+                FROM bronze_candidates
+                WHERE document_identifier = 'https://example.com/red-sea-oil'
+                """
+            ).fetchone()
+            self.assertEqual(rich_text[0], "Red Sea disruption lifts oil risk premium")
+            self.assertIn("Shipping interruptions", rich_text[1])
+            self.assertIn("Tanker disruptions", rich_text[2])
+            self.assertIn("OPEC", rich_text[3])
             out.close()
 
 
