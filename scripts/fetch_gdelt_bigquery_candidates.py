@@ -155,6 +155,17 @@ ORDER BY DATE DESC, DocumentIdentifier ASC{limit_clause}
 """.strip()
 
 
+def build_count_query(start: datetime, end: datetime, theme_pattern: str) -> str:
+    return f"""
+SELECT
+  COUNT(*) AS total_rows
+FROM `gdelt-bq.gdeltv2.gkg_partitioned`
+WHERE _PARTITIONTIME >= TIMESTAMP('{bq_timestamp(start)}')
+  AND _PARTITIONTIME < TIMESTAMP('{bq_timestamp(end)}')
+  AND REGEXP_CONTAINS(IFNULL(V2Themes, ''), r'{theme_pattern}')
+""".strip()
+
+
 def estimate_parquet_size(rows: int, bytes_processed: int | None) -> dict[str, Any]:
     # Observed local quant-algos finance-candidate parquet is about 1.1 KiB per
     # row with the narrower legacy schema. The richer standalone fetch preserves
@@ -167,6 +178,33 @@ def estimate_parquet_size(rows: int, bytes_processed: int | None) -> dict[str, A
         "estimated_parquet_mb_high": round(rows * high_bytes_per_row / 1_048_576, 1),
         "bigquery_bytes_processed": bytes_processed,
     }
+
+
+def project_output_size(
+    output_path_value: Path,
+    observed_rows: int,
+    total_rows: int | None,
+    enriched_rows: int | None = None,
+) -> dict[str, Any]:
+    output_bytes = output_path_value.stat().st_size
+    payload: dict[str, Any] = {
+        "output_bytes": output_bytes,
+        "output_mb": round(output_bytes / 1_048_576, 2),
+        "observed_rows": observed_rows,
+    }
+    if observed_rows > 0:
+        bytes_per_row = output_bytes / observed_rows
+        payload["observed_bytes_per_row"] = round(bytes_per_row, 2)
+        if total_rows is not None:
+            projected_bytes = int(round(bytes_per_row * total_rows))
+            payload["projected_full_window_bytes"] = projected_bytes
+            payload["projected_full_window_mb"] = round(projected_bytes / 1_048_576, 2)
+            payload["projected_full_window_rows"] = total_rows
+    if enriched_rows is not None:
+        payload["enriched_rows"] = enriched_rows
+        if observed_rows > 0:
+            payload["enriched_row_ratio"] = round(enriched_rows / observed_rows, 4)
+    return payload
 
 
 def clean_text(value: str | None) -> str | None:
@@ -345,6 +383,7 @@ def fetch_to_parquet(args: argparse.Namespace) -> dict[str, Any]:
         theme_pattern=args.theme_pattern,
         max_results=args.max_results,
     )
+    count_query = build_count_query(start, end, args.theme_pattern) if args.estimate_total_rows else None
     service_account_json = args.service_account_json
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=True) if service_account_json else nullcontext() as cred_file:
         if service_account_json:
@@ -358,6 +397,13 @@ def fetch_to_parquet(args: argparse.Namespace) -> dict[str, Any]:
             use_query_cache=not args.dry_run,
         )
         job = client.query(query, job_config=job_config)
+        total_rows = None
+        count_job_bytes_processed = None
+        if count_query:
+            count_job = client.query(count_query, job_config=job_config)
+            count_job_bytes_processed = count_job.total_bytes_processed
+            if not args.dry_run:
+                total_rows = int(next(count_job.result())["total_rows"])
         if args.dry_run:
             return {
                 "dry_run": True,
@@ -365,7 +411,9 @@ def fetch_to_parquet(args: argparse.Namespace) -> dict[str, Any]:
                 "end": end.isoformat(),
                 "max_results": args.max_results,
                 "total_bytes_processed": job.total_bytes_processed,
+                "count_query_total_bytes_processed": count_job_bytes_processed,
                 "query": query,
+                "count_query": count_query,
             }
 
         rows_iter = job.result(max_results=args.max_results)
@@ -417,15 +465,24 @@ def fetch_to_parquet(args: argparse.Namespace) -> dict[str, Any]:
     path = output_path(Path(args.output_root), partition_date, datetime.now(UTC))
     path.parent.mkdir(parents=True, exist_ok=True)
     pq.write_table(table, path, compression="zstd")
+    observed_projection = project_output_size(
+        path,
+        observed_rows=len(rows),
+        total_rows=total_rows,
+        enriched_rows=enrichment_summary["rows_enriched"] if enrichment_summary else 0,
+    )
     return {
         "dry_run": False,
         "start": start.isoformat(),
         "end": end.isoformat(),
         "max_results": args.max_results,
         "rows": len(rows),
+        "total_matching_rows": total_rows,
         "output_path": str(path),
         "total_bytes_processed": job.total_bytes_processed,
+        "count_query_total_bytes_processed": count_job_bytes_processed,
         "size_estimate": estimate_parquet_size(len(rows), job.total_bytes_processed),
+        "output_projection": observed_projection,
         "text_enrichment": enrichment_summary,
     }
 
@@ -466,6 +523,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--enrich-max-docs", type=int, default=DEFAULT_ENRICH_MAX_DOCS)
     parser.add_argument("--http-timeout", type=float, default=DEFAULT_HTTP_TIMEOUT)
     parser.add_argument("--user-agent", default=DEFAULT_USER_AGENT)
+    parser.add_argument("--estimate-total-rows", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--print-query", action="store_true")
     return parser.parse_args()

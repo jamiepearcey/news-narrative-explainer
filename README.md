@@ -138,8 +138,16 @@ python3 scripts/fetch_gdelt_bigquery_candidates.py \
   --lookback-hours 6 \
   --max-results 1000 \
   --enrich-text \
-  --enrich-max-docs 100
+  --enrich-max-docs 100 \
+  --estimate-total-rows
 ```
+
+With `--estimate-total-rows`, the fetch report includes:
+
+- actual parquet size for the fetched sample
+- observed bytes per row
+- projected full-window parquet size based on the sampled rows
+- total matching row count for the requested window
 
 Then build the local narrative graph from the standalone parquet:
 

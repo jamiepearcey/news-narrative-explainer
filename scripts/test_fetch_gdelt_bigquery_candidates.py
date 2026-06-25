@@ -12,12 +12,14 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 from fetch_gdelt_bigquery_candidates import (
+    build_count_query,
     build_query,
     clean_text,
     enrich_rows,
     estimate_parquet_size,
     extract_article_fields,
     output_path,
+    project_output_size,
     resolve_project,
 )
 
@@ -27,6 +29,7 @@ class FetchGdeltBigQueryCandidatesTests(unittest.TestCase):
         start = datetime(2026, 6, 24, 0, 0, tzinfo=UTC)
         end = datetime(2026, 6, 25, 0, 0, tzinfo=UTC)
         sql = build_query(start, end, "OIL|INFLATION", 50_000)
+        count_sql = build_count_query(start, end, "OIL|INFLATION")
 
         self.assertIn("FROM `gdelt-bq.gdeltv2.gkg_partitioned`", sql)
         self.assertIn("SourceCommonName AS source_common_name", sql)
@@ -38,6 +41,7 @@ class FetchGdeltBigQueryCandidatesTests(unittest.TestCase):
         self.assertIn("Quotations AS quotations", sql)
         self.assertIn("TO_JSON_STRING(STRUCT", sql)
         self.assertIn("LIMIT 50000", sql)
+        self.assertIn("COUNT(*) AS total_rows", count_sql)
 
     def test_output_path_is_hive_partitioned(self) -> None:
         path = output_path(
@@ -99,6 +103,20 @@ class FetchGdeltBigQueryCandidatesTests(unittest.TestCase):
 
     def test_clean_text_normalizes_whitespace(self) -> None:
         self.assertEqual(clean_text("  one \n two\tthree "), "one two three")
+
+    def test_project_output_size_scales_to_total_rows(self) -> None:
+        with mock.patch.object(Path, "stat", return_value=mock.Mock(st_size=3000)):
+            projection = project_output_size(
+                Path("/tmp/example.parquet"),
+                observed_rows=3,
+                total_rows=30,
+                enriched_rows=2,
+            )
+        self.assertEqual(projection["output_bytes"], 3000)
+        self.assertEqual(projection["observed_bytes_per_row"], 1000.0)
+        self.assertEqual(projection["projected_full_window_bytes"], 30000)
+        self.assertEqual(projection["projected_full_window_rows"], 30)
+        self.assertEqual(projection["enriched_row_ratio"], 0.6667)
 
 
 if __name__ == "__main__":
