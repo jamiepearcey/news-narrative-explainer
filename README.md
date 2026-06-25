@@ -20,6 +20,8 @@ It does not rank price-prediction candidates and does not make trading claims.
   Deterministic factor taxonomy.
 - `scripts/build_narrative_graph.py`
   Builds a local DuckDB narrative graph from parquet input.
+- `scripts/fetch_gdelt_bigquery_candidates.py`
+  Fetches one-day GDELT BigQuery GKG candidate rows directly to local parquet.
 - `scripts/query_narrative_graph.py`
   Query helper for post-hoc narrative identification.
 - `scripts/render_narrative_brief.py`
@@ -48,9 +50,63 @@ Optional text-bearing columns are consumed when present:
 - `summary` or `snippet` or `description`
 - `text` or `article_text` or `body_text` or `content`
 
+Optional metadata columns are also preserved in `bronze_candidates` and returned
+with supporting documents:
+
+- `metadata_json`
+- `gkg_extras` or `extras`
+- `sharing_image`
+- `related_images`
+- `social_image_embeds`
+- `social_video_embeds`
+- `quotations`
+- `amounts`
+- `dates`
+- `gcam`
+- `translation_info`
+
 When those fields are present, the local graph stores them directly and also
 builds a `relevant_text` field that blends article text with names, themes,
 organizations, and locations for post-hoc narrative review.
+
+The public GDELT BigQuery GKG table does not expose full article body text.
+The standalone fetcher therefore emits nullable `title`, `summary`, and `text`
+columns and fills richer GKG metadata where available.
+
+## Fetch
+
+Default one-day capped fetch:
+
+```bash
+python3 scripts/fetch_gdelt_bigquery_candidates.py \
+  --project "$GOOGLE_CLOUD_PROJECT" \
+  --max-results 50000
+```
+
+Dry-run BigQuery cost estimate:
+
+```bash
+python3 scripts/fetch_gdelt_bigquery_candidates.py \
+  --project "$GOOGLE_CLOUD_PROJECT" \
+  --dry-run \
+  --max-results 50000
+```
+
+Configurable window:
+
+```bash
+python3 scripts/fetch_gdelt_bigquery_candidates.py \
+  --project "$GOOGLE_CLOUD_PROJECT" \
+  --start 2026-06-24T00:00:00Z \
+  --end 2026-06-25T00:00:00Z \
+  --max-results 50000
+```
+
+Output is written to:
+
+```text
+data/gdelt_candidates/dt=YYYY-MM-DD/part-YYYYMMDDTHHMMSSZ-bigquery.parquet
+```
 
 ## Build
 
@@ -106,6 +162,7 @@ python3 scripts/render_narrative_brief.py \
 
 ```bash
 python3 scripts/test_build_narrative_graph.py
+python3 scripts/test_fetch_gdelt_bigquery_candidates.py
 python3 scripts/test_query_narrative_graph.py
 python3 scripts/test_narrative_explainer_mcp.py
 ```

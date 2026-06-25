@@ -64,6 +64,9 @@ class NarrativeGraphTests(unittest.TestCase):
                                 'Fed officials keep inflation focus',
                                 'Policy signals stayed hawkish after the latest inflation data.',
                                 'Federal Reserve officials said inflation remains too high and rate cuts are not imminent.',
+                                '{"source_table":"gdelt-bq.gdeltv2.gkg_partitioned"}',
+                                'fed extras payload',
+                                'Powell said rates remain restrictive.',
                                 'ECON_INFLATION,50;CENTRAL_BANK,50;INTEREST_RATE,30',
                                 '-2.5,0,0,0,0,0',
                                 '1#United States#US#US#38.0#-77.0#0',
@@ -79,6 +82,9 @@ class NarrativeGraphTests(unittest.TestCase):
                                 'Red Sea disruption lifts oil risk premium',
                                 'Shipping interruptions and sanctions concerns pushed oil-linked narratives higher.',
                                 'Tanker disruptions near the Red Sea raised concern about supply routes and near-term crude flows.',
+                                '{"source_table":"gdelt-bq.gdeltv2.gkg_partitioned"}',
+                                'red sea extras payload',
+                                'Traders quoted a higher risk premium.',
                                 'SHIPPING,30;OIL,30;SANCTIONS,10',
                                 '-4.0,0,0,0,0,0',
                                 '1#Yemen#YM#YM#15.5#47.5#0;1#Egypt#EG#EG#26.0#30.0#0',
@@ -94,6 +100,9 @@ class NarrativeGraphTests(unittest.TestCase):
                         title,
                         summary,
                         text,
+                        metadata_json,
+                        gkg_extras,
+                        quotations,
                         v2_themes,
                         v2_tone,
                         v2_locations,
@@ -136,7 +145,7 @@ class NarrativeGraphTests(unittest.TestCase):
             self.assertIn("WTI", asset_labels)
             rich_text = out.execute(
                 """
-                SELECT title, summary_text, body_text, relevant_text
+                SELECT title, summary_text, body_text, relevant_text, metadata_json, gkg_extras, quotations
                 FROM bronze_candidates
                 WHERE document_identifier = 'https://example.com/red-sea-oil'
                 """
@@ -145,6 +154,9 @@ class NarrativeGraphTests(unittest.TestCase):
             self.assertIn("Shipping interruptions", rich_text[1])
             self.assertIn("Tanker disruptions", rich_text[2])
             self.assertIn("OPEC", rich_text[3])
+            self.assertIn("gdelt-bq", rich_text[4])
+            self.assertEqual(rich_text[5], "red sea extras payload")
+            self.assertIn("risk premium", rich_text[6])
             out.close()
 
 

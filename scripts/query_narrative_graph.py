@@ -349,6 +349,17 @@ def query_supporting_docs(
                 ELSE substr(b.body_text, 1, 1200)
             END AS body_excerpt,
             b.relevant_text,
+            b.metadata_json,
+            b.gkg_extras,
+            b.sharing_image,
+            b.related_images,
+            b.social_image_embeds,
+            b.social_video_embeds,
+            b.quotations,
+            b.amounts,
+            b.dates,
+            b.gcam,
+            b.translation_info,
             COALESCE(
                 b.summary_text,
                 b.title,

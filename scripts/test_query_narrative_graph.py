@@ -48,6 +48,9 @@ class QueryNarrativeGraphTests(unittest.TestCase):
                             'Fed officials keep inflation focus',
                             'Policy signals stayed hawkish after the latest inflation data.',
                             'Federal Reserve officials said inflation remains too high and rate cuts are not imminent.',
+                            '{"source_table":"gdelt-bq.gdeltv2.gkg_partitioned"}',
+                            'fed extras payload',
+                            'Powell said rates remain restrictive.',
                             'ECON_INFLATION,50;CENTRAL_BANK,50;INTEREST_RATE,30',
                             '-2.5,0,0,0,0,0',
                             '1#United States#US#US#38.0#-77.0#0',
@@ -63,6 +66,9 @@ class QueryNarrativeGraphTests(unittest.TestCase):
                             'Red Sea disruption lifts oil risk premium',
                             'Shipping interruptions and sanctions concerns pushed oil-linked narratives higher.',
                             'Tanker disruptions near the Red Sea raised concern about supply routes and near-term crude flows.',
+                            '{"source_table":"gdelt-bq.gdeltv2.gkg_partitioned"}',
+                            'red sea extras payload',
+                            'Traders quoted a higher risk premium.',
                             'SHIPPING,30;OIL,30;SANCTIONS,10',
                             '-4.0,0,0,0,0,0',
                             '1#Yemen#YM#YM#15.5#47.5#0;1#Egypt#EG#EG#26.0#30.0#0',
@@ -78,6 +84,9 @@ class QueryNarrativeGraphTests(unittest.TestCase):
                     title,
                     summary,
                     text,
+                    metadata_json,
+                    gkg_extras,
+                    quotations,
                     v2_themes,
                     v2_tone,
                     v2_locations,
@@ -149,6 +158,9 @@ class QueryNarrativeGraphTests(unittest.TestCase):
             self.assertIn("Shipping interruptions", docs[0]["summary_text"])
             self.assertIn("Tanker disruptions", docs[0]["body_excerpt"])
             self.assertIn("OPEC", docs[0]["relevant_text"])
+            self.assertIn("gdelt-bq", docs[0]["metadata_json"])
+            self.assertEqual(docs[0]["gkg_extras"], "red sea extras payload")
+            self.assertIn("risk premium", docs[0]["quotations"])
 
             explain = query_explain_move(
                 db_path,

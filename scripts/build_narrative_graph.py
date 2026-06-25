@@ -64,6 +64,17 @@ TEXT_BODY_CANDIDATES = (
     "translated_text",
     "full_text",
 )
+METADATA_CANDIDATES = ("metadata_json",)
+GKG_EXTRAS_CANDIDATES = ("gkg_extras", "extras")
+SHARING_IMAGE_CANDIDATES = ("sharing_image", "SharingImage")
+RELATED_IMAGES_CANDIDATES = ("related_images", "RelatedImages")
+SOCIAL_IMAGE_EMBEDS_CANDIDATES = ("social_image_embeds", "SocialImageEmbeds")
+SOCIAL_VIDEO_EMBEDS_CANDIDATES = ("social_video_embeds", "SocialVideoEmbeds")
+QUOTATIONS_CANDIDATES = ("quotations", "Quotations")
+AMOUNTS_CANDIDATES = ("amounts", "Amounts")
+DATES_CANDIDATES = ("dates", "Dates")
+GCAM_CANDIDATES = ("gcam", "GCAM")
+TRANSLATION_INFO_CANDIDATES = ("translation_info", "TranslationInfo")
 
 
 def stable_u64(text: str) -> int:
@@ -199,6 +210,10 @@ def optional_text_expr(column_name: str | None) -> str:
     return f"NULLIF(trim(CAST({sql_identifier(column_name)} AS VARCHAR)), '')"
 
 
+def optional_expr_for(columns: set[str], candidates: tuple[str, ...]) -> str:
+    return optional_text_expr(first_present(columns, candidates))
+
+
 def relevant_text_expr(title_expr: str, summary_expr: str, body_expr: str) -> str:
     return f"""
         NULLIF(
@@ -240,6 +255,17 @@ def initialize_schema(con: duckdb.DuckDBPyConnection) -> None:
             summary_text VARCHAR,
             body_text VARCHAR,
             relevant_text VARCHAR,
+            metadata_json VARCHAR,
+            gkg_extras VARCHAR,
+            sharing_image VARCHAR,
+            related_images VARCHAR,
+            social_image_embeds VARCHAR,
+            social_video_embeds VARCHAR,
+            quotations VARCHAR,
+            amounts VARCHAR,
+            dates VARCHAR,
+            gcam VARCHAR,
+            translation_info VARCHAR,
             tone DOUBLE
         )
         """
@@ -354,7 +380,7 @@ def flush_pending_rows(
 ) -> None:
     if bronze_rows:
         con.executemany(
-            "INSERT INTO bronze_candidates VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO bronze_candidates VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             bronze_rows,
         )
         bronze_rows.clear()
@@ -399,6 +425,17 @@ def build_narrative_graph(
     summary_expr = optional_text_expr(first_present(columns, TEXT_SUMMARY_CANDIDATES))
     body_expr = optional_text_expr(first_present(columns, TEXT_BODY_CANDIDATES))
     relevant_expr = relevant_text_expr(title_expr, summary_expr, body_expr)
+    metadata_expr = optional_expr_for(columns, METADATA_CANDIDATES)
+    gkg_extras_expr = optional_expr_for(columns, GKG_EXTRAS_CANDIDATES)
+    sharing_image_expr = optional_expr_for(columns, SHARING_IMAGE_CANDIDATES)
+    related_images_expr = optional_expr_for(columns, RELATED_IMAGES_CANDIDATES)
+    social_image_embeds_expr = optional_expr_for(columns, SOCIAL_IMAGE_EMBEDS_CANDIDATES)
+    social_video_embeds_expr = optional_expr_for(columns, SOCIAL_VIDEO_EMBEDS_CANDIDATES)
+    quotations_expr = optional_expr_for(columns, QUOTATIONS_CANDIDATES)
+    amounts_expr = optional_expr_for(columns, AMOUNTS_CANDIDATES)
+    dates_expr = optional_expr_for(columns, DATES_CANDIDATES)
+    gcam_expr = optional_expr_for(columns, GCAM_CANDIDATES)
+    translation_info_expr = optional_expr_for(columns, TRANSLATION_INFO_CANDIDATES)
     con.executemany(
         "INSERT INTO factor_dictionary VALUES (?, ?, ?)",
         [(rule.factor_id, rule.label, rule.group) for rule in rules],
@@ -468,6 +505,17 @@ def build_narrative_graph(
             {summary_expr} AS summary_text,
             {body_expr} AS body_text,
             {relevant_expr} AS relevant_text,
+            {metadata_expr} AS metadata_json,
+            {gkg_extras_expr} AS gkg_extras,
+            {sharing_image_expr} AS sharing_image,
+            {related_images_expr} AS related_images,
+            {social_image_embeds_expr} AS social_image_embeds,
+            {social_video_embeds_expr} AS social_video_embeds,
+            {quotations_expr} AS quotations,
+            {amounts_expr} AS amounts,
+            {dates_expr} AS dates,
+            {gcam_expr} AS gcam,
+            {translation_info_expr} AS translation_info,
             try_cast(regexp_extract(COALESCE(v2_tone, ''), '^\\s*(-?[0-9]+(?:\\.[0-9]+)?)', 1) AS DOUBLE) AS tone
         FROM read_parquet({json.dumps(input_glob)}, union_by_name=true)
         """

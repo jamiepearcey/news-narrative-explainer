@@ -10,3 +10,4 @@ data/gdelt_candidates/*
 
 results/*
 !results/.gitkeep
+!results/README.md
