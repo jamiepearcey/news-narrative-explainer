@@ -38,6 +38,9 @@ class NarrativeExplainerMcpTests(unittest.TestCase):
                             '2025-01-02',
                             'ft.com',
                             'https://example.com/red-sea-oil',
+                            'Red Sea disruption lifts oil risk premium',
+                            'Shipping interruptions and sanctions concerns pushed oil-linked narratives higher.',
+                            'Tanker disruptions near the Red Sea raised concern about supply routes and near-term crude flows.',
                             'SHIPPING,30;OIL,30;SANCTIONS,10',
                             '-4.0,0,0,0,0,0',
                             '1#Yemen#YM#YM#15.5#47.5#0;1#Egypt#EG#EG#26.0#30.0#0',
@@ -50,6 +53,9 @@ class NarrativeExplainerMcpTests(unittest.TestCase):
                     partition_date,
                     source_common_name,
                     document_identifier,
+                    title,
+                    summary,
+                    text,
                     v2_themes,
                     v2_tone,
                     v2_locations,
@@ -109,6 +115,8 @@ class NarrativeExplainerMcpTests(unittest.TestCase):
                 },
             )
             self.assertIn("WTI was most associated", summary["content"][0]["text"])
+            self.assertIn("Red Sea disruption lifts oil risk premium", summary["content"][0]["text"])
+            self.assertIn("Shipping interruptions and sanctions concerns", summary["content"][0]["text"])
 
             docs = call_tool(
                 "supporting_docs",

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -104,6 +105,46 @@ def _text_content(text: str) -> dict[str, Any]:
     return {"content": [{"type": "text", "text": text}]}
 
 
+def _clean_text(text: str | None) -> str | None:
+    if not text:
+        return None
+    cleaned = re.sub(r"\s+", " ", text).strip()
+    return cleaned or None
+
+
+def _clip_text(text: str | None, limit: int = 240) -> str | None:
+    cleaned = _clean_text(text)
+    if not cleaned:
+        return None
+    if len(cleaned) <= limit:
+        return cleaned
+    clipped = cleaned[:limit].rsplit(" ", 1)[0].strip()
+    return clipped + "..."
+
+
+def _doc_evidence_line(doc: dict[str, Any]) -> str:
+    title = _clean_text(doc.get("title"))
+    evidence = _clip_text(doc.get("evidence_text") or doc.get("relevant_text"), 220)
+    parts: list[str] = []
+    if title:
+        parts.append(title)
+    if evidence and evidence != title:
+        parts.append(evidence)
+    if not parts:
+        parts.append(doc["document_identifier"])
+    return " | ".join(parts)
+
+
+def _top_factor_docs(payload: dict[str, Any], per_factor: int = 2) -> dict[str, list[dict[str, Any]]]:
+    top_labels = [row["factor_label"] for row in payload.get("top_narratives", [])[:3]]
+    grouped: dict[str, list[dict[str, Any]]] = {label: [] for label in top_labels}
+    for doc in payload.get("supporting_docs", []):
+        factor_label = doc.get("factor_label")
+        if factor_label in grouped and len(grouped[factor_label]) < per_factor:
+            grouped[factor_label].append(doc)
+    return grouped
+
+
 def _tool_explain_move(arguments: dict[str, Any]) -> dict[str, Any]:
     db = Path(arguments.get("db", DEFAULT_DB))
     payload = query_explain_move(
@@ -139,7 +180,7 @@ def _tool_summarize_narrative(arguments: dict[str, Any]) -> dict[str, Any]:
         limit=int(arguments.get("limit", 5)),
     )
     factors = payload["top_narratives"][:3]
-    docs = payload["supporting_docs"][:3]
+    docs = payload["supporting_docs"][:5]
     if not factors:
         summary = f"No narratives found for {payload['asset_label']} in the requested window."
         return _text_content(summary)
@@ -152,14 +193,27 @@ def _tool_summarize_narrative(arguments: dict[str, Any]) -> dict[str, Any]:
     for factor in factors:
         summary_lines.append(
             f"- {factor['factor_label']}: docs={factor.get('doc_count', factor.get('news_count'))}, "
-            f"sources≈{factor.get('avg_unique_sources')}, tone={factor.get('avg_tone_mean')}, "
+            f"mentions={factor.get('mention_count')}, sources={factor.get('avg_unique_sources')}, "
+            f"geo={factor.get('avg_geo_count')}, tone={factor.get('avg_tone_mean')}, "
             f"score={factor.get('avg_narrative_score', factor.get('avg_event_intensity'))}"
         )
-    if docs:
+    factor_docs = _top_factor_docs(payload)
+    if any(factor_docs.values()):
+        summary_lines.append("Evidence by factor:")
+        for factor in factors:
+            evidence_docs = factor_docs.get(factor["factor_label"], [])
+            if not evidence_docs:
+                continue
+            summary_lines.append(f"- {factor['factor_label']}:")
+            for doc in evidence_docs:
+                summary_lines.append(
+                    f"  - {doc['event_time']} | {doc['source_domain']} | {_doc_evidence_line(doc)}"
+                )
+    elif docs:
         summary_lines.append("Supporting documents:")
-        for doc in docs:
+        for doc in docs[:3]:
             summary_lines.append(
-                f"- {doc['event_time']} | {doc['factor_label']} | {doc['source_domain']} | {doc['document_identifier']}"
+                f"- {doc['event_time']} | {doc['factor_label']} | {doc['source_domain']} | {_doc_evidence_line(doc)}"
             )
     return _text_content("\n".join(summary_lines))
 

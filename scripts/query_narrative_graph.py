@@ -349,6 +349,15 @@ def query_supporting_docs(
                 ELSE substr(b.body_text, 1, 1200)
             END AS body_excerpt,
             b.relevant_text,
+            COALESCE(
+                b.summary_text,
+                b.title,
+                CASE
+                    WHEN b.body_text IS NULL THEN NULL
+                    ELSE substr(b.body_text, 1, 400)
+                END,
+                b.relevant_text
+            ) AS evidence_text,
             b.document_identifier,
             b.tone,
             m.classification_confidence

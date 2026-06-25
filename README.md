@@ -124,7 +124,9 @@ Exposed tools:
 - `explain_move`
   Returns the local factor explanation payload for an asset and date window.
 - `summarize_narrative`
-  Returns a short deterministic text summary built from the local explanation.
+  Returns a short deterministic text summary built from the local explanation,
+  using stored title, summary, body excerpt, and derived `relevant_text` when
+  available.
 - `supporting_docs`
   Returns the document list for an asset and optional factor.
 
