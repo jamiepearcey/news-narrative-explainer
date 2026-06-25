@@ -1,0 +1,160 @@
+{
+  "version": "phase1-v1",
+  "notes": "Deterministic first-pass factor taxonomy for GDELT finance candidate rows. Rules match uppercase normalized GKG themes, names, organizations, and locations. This is a prototype substrate for local research, not a promoted tradable factor model.",
+  "factors": [
+    {
+      "id": 101,
+      "label": "inflation",
+      "group": "macro",
+      "patterns": ["INFLATION", "CPI", "PPI", "PRICE_PRESSURE", "PRICE_RISE", "COST_PUSH"],
+      "asset_hints": ["US2Y", "US10Y", "DXY", "Gold"]
+    },
+    {
+      "id": 102,
+      "label": "central_bank_policy",
+      "group": "macro",
+      "patterns": ["CENTRAL_BANK", "MONETARY_POLICY", "FEDERAL RESERVE", "FED ", "ECB", "BOE", "BOJ", "POWELL", "LAGARDE", "BAILEY"],
+      "asset_hints": ["US2Y", "US10Y", "DXY", "SPX", "Gold"]
+    },
+    {
+      "id": 103,
+      "label": "interest_rates",
+      "group": "macro",
+      "patterns": ["INTEREST_RATE", "RATE_HIKE", "RATE_CUT", "YIELD", "TREASURY_YIELD", "BOND_YIELD"],
+      "asset_hints": ["US2Y", "US10Y", "TLT", "DXY"]
+    },
+    {
+      "id": 104,
+      "label": "growth_activity",
+      "group": "macro",
+      "patterns": ["GDP", "PMI", "MANUFACTURING", "SERVICES", "ECON_GROWTH", "ECONOMY", "ACTIVITY"],
+      "asset_hints": ["SPX", "NDX", "HG", "WTI"]
+    },
+    {
+      "id": 105,
+      "label": "labour_market",
+      "group": "macro",
+      "patterns": ["UNEMPLOYMENT", "PAYROLL", "LABOR", "LABOUR", "JOBS", "WAGES", "WAGE"],
+      "asset_hints": ["US2Y", "US10Y", "DXY", "SPX"]
+    },
+    {
+      "id": 106,
+      "label": "fiscal_debt",
+      "group": "macro",
+      "patterns": ["FISCAL", "BUDGET", "DEFICIT", "DEBT", "TREASURY_ISSUANCE", "DEBT_SUSTAINABILITY"],
+      "asset_hints": ["US10Y", "TLT", "DXY"]
+    },
+    {
+      "id": 201,
+      "label": "banking_stress",
+      "group": "credit",
+      "patterns": ["BANKING", "BANK_", "BANK FAILURE", "DEPOSIT", "LIQUIDITY", "FUNDING_STRESS", "CREDIT", "DEFAULT"],
+      "asset_hints": ["KBE", "HYG", "LQD", "US2Y"]
+    },
+    {
+      "id": 202,
+      "label": "sovereign_risk",
+      "group": "credit",
+      "patterns": ["SOVEREIGN", "DEBT_CRISIS", "DEFAULT", "IMF", "BOND_SPREAD"],
+      "asset_hints": ["EMB", "DXY", "Gold"]
+    },
+    {
+      "id": 301,
+      "label": "war_conflict",
+      "group": "geopolitics",
+      "patterns": ["WAR", "CONFLICT", "MILITARY", "INVASION", "MISSILE", "ATTACK"],
+      "asset_hints": ["WTI", "Brent", "Gold", "DXY"]
+    },
+    {
+      "id": 302,
+      "label": "sanctions_trade",
+      "group": "geopolitics",
+      "patterns": ["SANCTION", "TARIFF", "TRADE", "EXPORT_CONTROL", "EMBARGO"],
+      "asset_hints": ["DXY", "HG", "WTI", "FXI"]
+    },
+    {
+      "id": 303,
+      "label": "elections_policy",
+      "group": "geopolitics",
+      "patterns": ["ELECTION", "VOTE", "PARLIAMENT", "REGULATION", "REGULATORY", "POLICY"],
+      "asset_hints": ["SPX", "DXY", "FXI", "BTC"]
+    },
+    {
+      "id": 304,
+      "label": "civil_unrest",
+      "group": "geopolitics",
+      "patterns": ["PROTEST", "UNREST", "RIOT", "STRIKE", "TERROR"],
+      "asset_hints": ["WTI", "Gold", "DXY"]
+    },
+    {
+      "id": 305,
+      "label": "shipping_disruption",
+      "group": "geopolitics",
+      "patterns": ["SUPPLY_CHAIN", "SHIPPING", "RED SEA", "SUEZ", "PANAMA CANAL", "PORT", "LOGISTICS"],
+      "asset_hints": ["WTI", "Brent", "HG", "BDI"]
+    },
+    {
+      "id": 401,
+      "label": "oil",
+      "group": "commodities",
+      "patterns": ["OIL", "CRUDE", "WTI", "BRENT", "OPEC"],
+      "asset_hints": ["WTI", "Brent", "XLE", "CAD"]
+    },
+    {
+      "id": 402,
+      "label": "gas_lng",
+      "group": "commodities",
+      "patterns": ["NATURAL_GAS", " GAS ", "LNG"],
+      "asset_hints": ["NG", "TTF", "XLE"]
+    },
+    {
+      "id": 403,
+      "label": "metals_mining",
+      "group": "commodities",
+      "patterns": ["METAL", "MINING", "IRON_ORE", "ALUMINUM", "NICKEL"],
+      "asset_hints": ["XME", "BHP", "RIO"]
+    },
+    {
+      "id": 404,
+      "label": "copper",
+      "group": "commodities",
+      "patterns": ["COPPER"],
+      "asset_hints": ["HG", "FCX", "FXI"]
+    },
+    {
+      "id": 405,
+      "label": "gold_precious",
+      "group": "commodities",
+      "patterns": ["GOLD", "BULLION", "SILVER"],
+      "asset_hints": ["Gold", "GDX", "DXY"]
+    },
+    {
+      "id": 501,
+      "label": "earnings",
+      "group": "corporate",
+      "patterns": ["EARNINGS", "GUIDANCE", "REVENUE", "PROFIT", "SALES"],
+      "asset_hints": ["SPX", "NDX"]
+    },
+    {
+      "id": 502,
+      "label": "mergers_acquisitions",
+      "group": "corporate",
+      "patterns": ["MERGER", "ACQUISITION", "BUYOUT", "M&A"],
+      "asset_hints": ["SPX", "NDX"]
+    },
+    {
+      "id": 503,
+      "label": "restructuring_fraud",
+      "group": "corporate",
+      "patterns": ["LAYOFF", "RESTRUCTURING", "FRAUD", "ACCOUNTING", "BANKRUPTCY"],
+      "asset_hints": ["HYG", "LQD", "SPX"]
+    },
+    {
+      "id": 601,
+      "label": "crypto_regulation",
+      "group": "crypto",
+      "patterns": ["BITCOIN", "CRYPTO", "CRYPTOCURRENCY", "ETF", "STABLECOIN", "EXCHANGE", "TOKEN", "BLOCKCHAIN", "HACK", "CUSTODY"],
+      "asset_hints": ["BTC", "ETH", "COIN"]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.DS_Store
+
+data/*
+!data/.gitkeep
+!data/gdelt_candidates/
+data/gdelt_candidates/*
+!data/gdelt_candidates/.gitkeep
+
+results/*
+!results/.gitkeep
