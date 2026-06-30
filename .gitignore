@@ -8,6 +8,7 @@ v2/tmp/
 v3/tmp/
 v3/.tmp_source_inventory/
 v3/.fastembed_cache/
+v3/node_modules
 v3/node_modules/
 v2/docker/clickhouse/
 
