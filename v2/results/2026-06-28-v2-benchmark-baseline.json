@@ -1,0 +1,144 @@
+{
+  "captured_at_utc": "2026-06-28T11:32:17Z",
+  "project": "news-narrative-explainer/v2",
+  "dataset": {
+    "partition_date": "2026-06-05",
+    "source_path": "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_20d_full/dt=2026-06-05/part-20260626T211008Z-bigquery-window.parquet",
+    "clickhouse_user_files_path": "gdelt_candidates_20d_full/dt=2026-06-05/part-20260626T211008Z-bigquery-window.parquet",
+    "file_size_bytes": 695287449,
+    "content_sha256": "1d1b6c1f28fa9bfe188990129d1b4abceb82bf57e23e6ba9403a082e6d0862a2",
+    "row_count": 178845
+  },
+  "environment": {
+    "clickhouse_url": "http://127.0.0.1:8123",
+    "clickhouse_server_version": "24.11.1.2557",
+    "benchmark_databases": [
+      "v2bench_20260628",
+      "v2bench_graph_20260628"
+    ]
+  },
+  "benchmarks": {
+    "rust_release_microbenchmarks": {
+      "command": "/Users/jamiepearcey/tmp/codex-cargo-target/release/news-narrative-v2 benchmark-rust-work --iterations 200000",
+      "wall_time_seconds": 4.04,
+      "max_rss_bytes": 7585792,
+      "peak_memory_footprint_bytes": 2474296,
+      "results": [
+        {
+          "benchmark": "transform_bronze_row",
+          "iterations": 200000,
+          "total_ms": 2002.1173330000001,
+          "per_iteration_us": 10.010586665,
+          "ops_per_sec": 99894.24530894862
+        },
+        {
+          "benchmark": "supporting_doc_relevance",
+          "iterations": 200000,
+          "total_ms": 2033.998125,
+          "per_iteration_us": 10.169990625,
+          "ops_per_sec": 98328.5075545485
+        }
+      ]
+    },
+    "bootstrap": {
+      "command": "/Users/jamiepearcey/tmp/codex-cargo-target/release/news-narrative-v2 bootstrap",
+      "wall_time_seconds": 0.44,
+      "max_rss_bytes": 9175040,
+      "peak_memory_footprint_bytes": 2982200,
+      "status": "ok"
+    },
+    "load_local_parquet_first_run": {
+      "command": "/Users/jamiepearcey/tmp/codex-cargo-target/release/news-narrative-v2 load-local-parquet-into-clickhouse --input-glob 'gdelt_candidates_20d_full/dt=2026-06-05/part-*.parquet' --start-date 2026-06-05 --end-date 2026-06-06",
+      "wall_time_seconds": 7.89,
+      "max_rss_bytes": 9535488,
+      "peak_memory_footprint_bytes": 3293496,
+      "loaded_rows": 178845,
+      "clickhouse_reported": {
+        "processed_mib": 661.70,
+        "insert_time_seconds": 6.34,
+        "rows_per_second": 28200.0,
+        "mib_per_second": 104.36,
+        "peak_query_memory_gib": 1.05
+      },
+      "status": "ok"
+    },
+    "load_local_parquet_reload_skip": {
+      "command": "/Users/jamiepearcey/tmp/codex-cargo-target/release/news-narrative-v2 load-local-parquet-into-clickhouse --input-glob 'gdelt_candidates_20d_full/dt=2026-06-05/part-*.parquet' --start-date 2026-06-05 --end-date 2026-06-06",
+      "wall_time_seconds": 1.35,
+      "max_rss_bytes": 9355264,
+      "peak_memory_footprint_bytes": 3162424,
+      "loaded_files": 0,
+      "skipped_files": 1,
+      "status": "ok"
+    },
+    "enrich_bronze": {
+      "command": "/Users/jamiepearcey/tmp/codex-cargo-target/release/news-narrative-v2 enrich-bronze --start-date 2026-06-05 --end-date 2026-06-06 --batch-size 2000",
+      "wall_time_seconds": 46.66,
+      "max_rss_bytes": 1619345408,
+      "peak_memory_footprint_bytes": 3933966368,
+      "inserted_rows": 178845,
+      "status": "ok"
+    },
+    "query_summary_partial_graph": {
+      "command": "/Users/jamiepearcey/tmp/codex-cargo-target/release/news-narrative-v2 query --view summary",
+      "wall_time_seconds": 0.28,
+      "max_rss_bytes": 8601600,
+      "peak_memory_footprint_bytes": 2457912,
+      "status": "ok"
+    },
+    "query_top_factors_partial_graph": {
+      "command": "/Users/jamiepearcey/tmp/codex-cargo-target/release/news-narrative-v2 query --view top-factors --limit 10",
+      "wall_time_seconds": 0.26,
+      "max_rss_bytes": 8306688,
+      "peak_memory_footprint_bytes": 2195768,
+      "status": "ok"
+    },
+    "query_top_assets_partial_graph": {
+      "command": "/Users/jamiepearcey/tmp/codex-cargo-target/release/news-narrative-v2 query --view top-assets --limit 10",
+      "wall_time_seconds": 0.05,
+      "max_rss_bytes": 8208384,
+      "peak_memory_footprint_bytes": 2146616,
+      "status": "ok",
+      "note": "Returned an empty result because silver_asset_factor_mentions was not materialized."
+    },
+    "build_clickhouse_graph": {
+      "command": "/Users/jamiepearcey/tmp/codex-cargo-target/release/news-narrative-v2 build-clickhouse-graph --start-date 2026-06-05 --end-date 2026-06-06 --source-uri 'file://local-gdelt-corpus'",
+      "status": "failed",
+      "failure": {
+        "category": "clickhouse_memory_limit_exceeded",
+        "first_failure_wall_time_seconds": 100.59,
+        "second_failure_with_grace_hash_wall_time_seconds": 123.83,
+        "error_code": 241,
+        "error_name": "MEMORY_LIMIT_EXCEEDED",
+        "message": "While executing JoiningTransform during asset-factor materialization."
+      },
+      "live_process_sample": {
+        "elapsed_seconds": 81.14,
+        "read_rows": 251510,
+        "read_bytes": 1143352355,
+        "memory_usage_bytes": 9921315891
+      }
+    }
+  },
+  "partial_materialization_state": {
+    "v2bench_20260628": {
+      "bronze_candidates": 178845,
+      "silver_event_graph": 342000,
+      "silver_factor_mentions": 1557804,
+      "silver_asset_factor_mentions": 0,
+      "silver_market_context_mentions": 0
+    },
+    "v2bench_graph_20260628": {
+      "bronze_candidates": 178845,
+      "silver_event_graph": 0,
+      "silver_factor_mentions": 0,
+      "silver_asset_factor_mentions": 0,
+      "silver_market_context_mentions": 0
+    }
+  },
+  "notes": [
+    "This artifact captures the first full benchmark pass after moving more of the pipeline into ClickHouse.",
+    "The graph build remains the dominant unresolved bottleneck.",
+    "Representative asset-factor query benchmarks remain blocked until the graph SQL fanout is reduced."
+  ]
+}

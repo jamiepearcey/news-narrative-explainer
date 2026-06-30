@@ -1,0 +1,20 @@
+{
+  "date": "2026-06-28",
+  "store": "http://127.0.0.1:8789",
+  "cache_root": "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/.cache/v3_duckdb_query",
+  "reference_day": "2026-06-05",
+  "results": {
+    "explain_move": {
+      "cold_seconds": 2.7664607080005226,
+      "warm_seconds": 1.3271646670000337
+    },
+    "explain_day": {
+      "cold_seconds": 8.784709000001385,
+      "warm_seconds": 8.943207166999855
+    },
+    "similar_days": {
+      "cold_seconds": 0.10198283399950014,
+      "warm_seconds": 0.03196058399953472
+    }
+  }
+}

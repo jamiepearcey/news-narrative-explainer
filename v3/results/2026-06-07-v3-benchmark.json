@@ -1,0 +1,53 @@
+{
+  "captured_at_utc": "2026-06-28T17:55:52.808154+00:00",
+  "date": "2026-06-07",
+  "input_glob": "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_07/*.parquet",
+  "input_files": [
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_07/000000000000.parquet"
+  ],
+  "output_root": "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/narrative_graph_parquet_v3",
+  "stage_metrics": [
+    {
+      "stage": "load_input",
+      "rows_in": 1,
+      "rows_out": 0,
+      "elapsed_ms": 2.1624169999999996
+    },
+    {
+      "stage": "build_bronze",
+      "rows_in": 0,
+      "rows_out": 0,
+      "elapsed_ms": 0.183291
+    },
+    {
+      "stage": "build_silver",
+      "rows_in": 0,
+      "rows_out": 0,
+      "elapsed_ms": 0.008749999999999999
+    },
+    {
+      "stage": "build_gold",
+      "rows_in": 0,
+      "rows_out": 0,
+      "elapsed_ms": 45670.98875
+    },
+    {
+      "stage": "write_outputs",
+      "rows_in": 0,
+      "rows_out": 9,
+      "elapsed_ms": 7.3335420000000004
+    }
+  ],
+  "output_counts": {
+    "doc_payload_daily": 0,
+    "gold_asset_factor_crossover_links_daily": 0,
+    "gold_asset_factor_panel_daily": 0,
+    "gold_factor_buckets_daily": 0,
+    "gold_factor_crossover_links_daily": 0,
+    "graph_doc_nodes_daily": 0,
+    "silver_asset_factor_mentions": 0,
+    "silver_event_graph": 0,
+    "silver_factor_mentions": 0,
+    "silver_market_context_mentions": 0
+  }
+}

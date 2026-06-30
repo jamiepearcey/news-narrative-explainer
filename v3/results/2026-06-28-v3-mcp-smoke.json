@@ -1,0 +1,51 @@
+{
+  "date": "2026-06-28",
+  "store": "http://127.0.0.1:8789",
+  "reference_day": "2026-06-05",
+  "tools": {
+    "explain_move": {
+      "ok": true,
+      "seconds": 1.7536280829990574
+    },
+    "summarize_narrative": {
+      "ok": true,
+      "seconds": 3.566943166000783
+    },
+    "supporting_docs": {
+      "ok": true,
+      "seconds": 1.7858548339991103
+    },
+    "explain_day": {
+      "ok": true,
+      "seconds": 2.3500655419993564
+    },
+    "explain_cross_asset_move": {
+      "ok": true,
+      "seconds": 2.273336833999565
+    },
+    "build_narrative_frame": {
+      "ok": true,
+      "seconds": 2.310607708999669
+    },
+    "find_contradictory_assets": {
+      "ok": true,
+      "seconds": 2.313186499999574
+    },
+    "explain_asset_via_day_context": {
+      "ok": true,
+      "seconds": 2.3456256249992293
+    },
+    "query_duckdb": {
+      "ok": true,
+      "seconds": 0.02601200000026438
+    },
+    "similar_days": {
+      "ok": true,
+      "seconds": 0.03767845799848146
+    },
+    "intraday_evolution": {
+      "ok": true,
+      "seconds": 0.09632820800106856
+    }
+  }
+}

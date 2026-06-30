@@ -1,0 +1,59 @@
+{
+  "captured_at_utc": "2026-06-28T18:18:35.539086+00:00",
+  "date": "2026-06-19",
+  "input_glob": "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_19/*.parquet",
+  "input_files": [
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_19/000000000000.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_19/000000000001.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_19/000000000002.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_19/000000000003.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_19/000000000004.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_19/000000000005.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_19/000000000006.parquet"
+  ],
+  "output_root": "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/narrative_graph_parquet_v3",
+  "stage_metrics": [
+    {
+      "stage": "load_input",
+      "rows_in": 7,
+      "rows_out": 163769,
+      "elapsed_ms": 2170.3932090000003
+    },
+    {
+      "stage": "build_bronze",
+      "rows_in": 163769,
+      "rows_out": 163769,
+      "elapsed_ms": 865.7374580000001
+    },
+    {
+      "stage": "build_silver",
+      "rows_in": 163769,
+      "rows_out": 3474615,
+      "elapsed_ms": 3414.58575
+    },
+    {
+      "stage": "build_gold",
+      "rows_in": 3474615,
+      "rows_out": 17290,
+      "elapsed_ms": 58224.105542
+    },
+    {
+      "stage": "write_outputs",
+      "rows_in": 4395182,
+      "rows_out": 9,
+      "elapsed_ms": 10669.345249999998
+    }
+  ],
+  "output_counts": {
+    "doc_payload_daily": 163769,
+    "gold_asset_factor_crossover_links_daily": 11402,
+    "gold_asset_factor_panel_daily": 12369,
+    "gold_factor_buckets_daily": 4921,
+    "gold_factor_crossover_links_daily": 4674,
+    "graph_doc_nodes_daily": 163769,
+    "silver_asset_factor_mentions": 2024507,
+    "silver_event_graph": 156282,
+    "silver_factor_mentions": 1450108,
+    "silver_market_context_mentions": 583226
+  }
+}

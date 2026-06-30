@@ -1,6 +1,74 @@
 __pycache__/
 *.pyc
 .DS_Store
+.pytest_cache/
+
+tmp/
+v2/tmp/
+v3/tmp/
+v3/.tmp_source_inventory/
+v3/.fastembed_cache/
+v3/node_modules/
+v2/docker/clickhouse/
+
+fasttext classifier/__pycache__/
+fasttext classifier/data/
+fasttext classifier/feedback/
+fasttext classifier/models/
+fasttext classifier/results/
+
+v2/results/*
+!v2/results/.gitkeep
+!v2/results/2026-06-28-v2-benchmark-baseline.json
+
+v3/results/*
+!v3/results/.gitkeep
+!v3/results/2026-05-28-v3-benchmark.json
+!v3/results/2026-05-29-v3-benchmark.json
+!v3/results/2026-05-30-v3-benchmark.json
+!v3/results/2026-05-31-v3-benchmark.json
+!v3/results/2026-06-01-v3-benchmark.json
+!v3/results/2026-06-02-v3-benchmark.json
+!v3/results/2026-06-03-v3-benchmark.json
+!v3/results/2026-06-04-v3-benchmark.json
+!v3/results/2026-06-05-v3-benchmark.json
+!v3/results/2026-06-05-v3-validation-hosted-qdrant-llmjudge.json
+!v3/results/2026-06-05-v3-validation-hosted-qdrant.json
+!v3/results/2026-06-05-v3-validation-smoke.json
+!v3/results/2026-06-06-v3-benchmark.json
+!v3/results/2026-06-07-v3-benchmark.json
+!v3/results/2026-06-08-v3-benchmark.json
+!v3/results/2026-06-09-v3-benchmark.json
+!v3/results/2026-06-10-v3-benchmark.json
+!v3/results/2026-06-11-v3-benchmark.json
+!v3/results/2026-06-12-v3-benchmark.json
+!v3/results/2026-06-13-v3-benchmark.json
+!v3/results/2026-06-14-v3-benchmark.json
+!v3/results/2026-06-15-v3-benchmark.json
+!v3/results/2026-06-16-v3-benchmark.json
+!v3/results/2026-06-17-v3-benchmark.json
+!v3/results/2026-06-18-v3-benchmark.json
+!v3/results/2026-06-19-v3-benchmark.json
+!v3/results/2026-06-20-v3-benchmark.json
+!v3/results/2026-06-21-v3-benchmark.json
+!v3/results/2026-06-22-v3-benchmark.json
+!v3/results/2026-06-23-v3-benchmark.json
+!v3/results/2026-06-26-v3-benchmark.json
+!v3/results/2026-06-28-v3-hosted-query-benchmark.json
+!v3/results/2026-06-28-v3-mcp-smoke.json
+!v3/results/2026-06-28-v3-query-cache-benchmark.json
+!v3/results/all-days-summary.tsv
+!v3/results/core_50.csv
+!v3/results/core_100.csv
+!v3/results/curated_source_candidates_200.csv
+!v3/results/source_domain_type_inventory.csv
+!v3/results/source_quality_external.csv
+!v3/results/source_quality_external_errors.json
+!v3/results/source_quality_external_summary.json
+!v3/results/source_score_inventory.csv
+!v3/results/source_score_inventory_summary.json
+!v3/results/top_200_useful_sources.csv
+!v3/results/watchlist_100.csv
 
 data/*
 !data/.gitkeep

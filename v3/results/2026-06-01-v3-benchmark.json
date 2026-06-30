@@ -1,0 +1,63 @@
+{
+  "captured_at_utc": "2026-06-28T17:48:12.454831+00:00",
+  "date": "2026-06-01",
+  "input_glob": "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_01/*.parquet",
+  "input_files": [
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_01/000000000000.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_01/000000000001.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_01/000000000002.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_01/000000000003.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_01/000000000004.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_01/000000000005.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_01/000000000006.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_01/000000000007.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_01/000000000008.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_01/000000000009.parquet",
+    "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/gdelt_candidates_etl_day_2026_06_01/000000000010.parquet"
+  ],
+  "output_root": "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/narrative_graph_parquet_v3",
+  "stage_metrics": [
+    {
+      "stage": "load_input",
+      "rows_in": 11,
+      "rows_out": 168426,
+      "elapsed_ms": 2188.167833
+    },
+    {
+      "stage": "build_bronze",
+      "rows_in": 168426,
+      "rows_out": 168426,
+      "elapsed_ms": 862.42225
+    },
+    {
+      "stage": "build_silver",
+      "rows_in": 168426,
+      "rows_out": 3414682,
+      "elapsed_ms": 3454.148875
+    },
+    {
+      "stage": "build_gold",
+      "rows_in": 3414682,
+      "rows_out": 17644,
+      "elapsed_ms": 46722.256625
+    },
+    {
+      "stage": "write_outputs",
+      "rows_in": 4358848,
+      "rows_out": 9,
+      "elapsed_ms": 12035.434334
+    }
+  ],
+  "output_counts": {
+    "doc_payload_daily": 168426,
+    "gold_asset_factor_crossover_links_daily": 10652,
+    "gold_asset_factor_panel_daily": 12618,
+    "gold_factor_buckets_daily": 5026,
+    "gold_factor_crossover_links_daily": 4513,
+    "graph_doc_nodes_daily": 168426,
+    "silver_asset_factor_mentions": 1971351,
+    "silver_event_graph": 160346,
+    "silver_factor_mentions": 1443331,
+    "silver_market_context_mentions": 597750
+  }
+}

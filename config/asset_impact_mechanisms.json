@@ -1,0 +1,170 @@
+{
+  "WTI": {
+    "oil": {
+      "impact_path": "WTI responds directly to crude supply, benchmark price, and refinery-demand news.",
+      "mechanism_terms": ["WTI", "CRUDE", "OIL", "BARREL", "REFINERY", "SUPPLY", "EXPORT", "OPEC"]
+    },
+    "shipping_disruption": {
+      "impact_path": "WTI can move when tanker routes or chokepoints threaten crude flows into the physical oil market.",
+      "mechanism_terms": ["STRAIT OF HORMUZ", "RED SEA", "TANKER", "SHIPPING", "CRUDE", "SUPPLY", "EXPORT", "PERSIAN GULF", "REFINER"]
+    },
+    "war_conflict": {
+      "impact_path": "Conflict matters to WTI when it raises the risk of crude supply loss, transit disruption, or an oil risk premium.",
+      "mechanism_terms": ["IRAN", "ISRAEL", "MISSILE", "ATTACK", "CRUDE", "OIL", "SUPPLY", "HORMUZ", "RISK PREMIUM"]
+    },
+    "sanctions_trade": {
+      "impact_path": "Sanctions or export restrictions can tighten crude balances and change the flow of barrels across oil markets.",
+      "mechanism_terms": ["SANCTION", "EXPORT", "EMBARGO", "CRUDE", "OIL", "BARREL", "SUPPLY", "BUYING"]
+    }
+  },
+  "HG": {
+    "copper": {
+      "impact_path": "HG is most sensitive to copper-specific supply, demand, inventory, and smelter or mine news.",
+      "mechanism_terms": ["COPPER", "COMEX", "LME", "SMELTER", "MINE", "CONCENTRATE", "INVENTORY", "REFINED"]
+    },
+    "growth_activity": {
+      "impact_path": "HG often reflects expectations for industrial demand, construction, and manufacturing activity.",
+      "mechanism_terms": ["COPPER", "DEMAND", "MANUFACTURING", "INDUSTRIAL", "CHINA", "CONSTRUCTION", "SMELTER"]
+    },
+    "shipping_disruption": {
+      "impact_path": "HG can be affected when shipping delays disrupt concentrate or refined copper flows.",
+      "mechanism_terms": ["COPPER", "PORT", "SHIPPING", "LOGISTICS", "CONCENTRATE", "SMELTER", "FREIGHT"]
+    }
+  },
+  "Gold": {
+    "gold_precious": {
+      "impact_path": "Gold responds most directly to bullion-specific demand, central-bank buying, and investor positioning.",
+      "mechanism_terms": ["GOLD", "BULLION", "XAU", "PRECIOUS METAL", "CENTRAL BANK BUYING", "SAFE HAVEN"]
+    },
+    "war_conflict": {
+      "impact_path": "Conflict affects Gold mainly through safe-haven demand and risk-off positioning.",
+      "mechanism_terms": ["GOLD", "BULLION", "SAFE HAVEN", "HAVEN", "RISK OFF", "FLIGHT TO QUALITY"]
+    },
+    "inflation": {
+      "impact_path": "Inflation narratives matter to Gold when they alter real-rate or store-of-value expectations.",
+      "mechanism_terms": ["GOLD", "BULLION", "INFLATION", "REAL YIELD", "STORE OF VALUE", "PRICE PRESSURE"]
+    },
+    "central_bank_policy": {
+      "impact_path": "Central-bank policy affects Gold through real yields, policy expectations, and dollar sensitivity.",
+      "mechanism_terms": ["GOLD", "BULLION", "REAL YIELD", "FED", "RATE CUT", "RATE HIKE", "DOLLAR"]
+    }
+  },
+  "US2Y": {
+    "central_bank_policy": {
+      "impact_path": "US2Y responds most directly to Fed-path repricing, front-end rate expectations, and hawkish or dovish policy guidance.",
+      "mechanism_terms": ["FED", "FOMC", "POLICY", "RATE HIKE", "RATE CUT", "FRONT END", "2-YEAR", "TWO-YEAR", "TREASURY", "YIELD"]
+    },
+    "inflation": {
+      "impact_path": "US2Y moves when inflation news shifts expected Fed tightening or easing through the front end of the Treasury curve.",
+      "mechanism_terms": ["INFLATION", "CPI", "PCE", "PRICE PRESSURE", "FED", "FRONT END", "2-YEAR", "TREASURY", "YIELD"]
+    },
+    "interest_rates": {
+      "impact_path": "US2Y is highly sensitive to explicit moves in front-end rates, Treasury yields, and policy-rate expectations.",
+      "mechanism_terms": ["RATE", "RATES", "YIELD", "TREASURY", "FRONT END", "2-YEAR", "TWO-YEAR", "CUT", "HIKE"]
+    },
+    "labour_market": {
+      "impact_path": "US2Y often reacts to labor-market news when payrolls or wages change the expected Fed path.",
+      "mechanism_terms": ["PAYROLLS", "JOBS", "WAGES", "UNEMPLOYMENT", "FED", "RATE", "YIELD", "TREASURY"]
+    }
+  },
+  "US10Y": {
+    "inflation": {
+      "impact_path": "US10Y moves when inflation or energy news shifts long-end inflation expectations and Treasury term pricing.",
+      "mechanism_terms": ["INFLATION", "CPI", "PCE", "OIL", "ENERGY", "TREASURY", "10-YEAR", "TEN-YEAR", "YIELD", "TERM PREMIUM"]
+    },
+    "central_bank_policy": {
+      "impact_path": "US10Y reacts to Fed guidance when policy expectations feed into duration pricing and long-end Treasury yields.",
+      "mechanism_terms": ["FED", "FOMC", "POLICY", "RATE", "TREASURY", "10-YEAR", "TEN-YEAR", "YIELD", "DURATION"]
+    },
+    "interest_rates": {
+      "impact_path": "US10Y is directly affected by duration repricing, Treasury yield moves, and changes in the long-end rates outlook.",
+      "mechanism_terms": ["RATES", "YIELD", "TREASURY", "10-YEAR", "TEN-YEAR", "TERM PREMIUM", "DURATION", "BOND"]
+    },
+    "fiscal_debt": {
+      "impact_path": "US10Y can move on debt, deficit, or issuance news that changes Treasury supply and long-end term premium.",
+      "mechanism_terms": ["DEFICIT", "DEBT", "ISSUANCE", "SUPPLY", "AUCTION", "TREASURY", "10-YEAR", "TEN-YEAR", "YIELD"]
+    }
+  },
+  "DXY": {
+    "central_bank_policy": {
+      "impact_path": "DXY responds most directly to relative Fed-policy repricing, rate differentials, and hawkish or dovish dollar support.",
+      "mechanism_terms": ["DOLLAR", "USD", "DXY", "FED", "POLICY", "RATE", "DIFFERENTIAL", "HAWKISH", "DOVISH", "CURRENCY"]
+    },
+    "interest_rates": {
+      "impact_path": "DXY often moves with U.S. rate differentials and Treasury-yield repricing versus other major currencies.",
+      "mechanism_terms": ["DOLLAR", "USD", "DXY", "TREASURY", "YIELD", "RATES", "DIFFERENTIAL", "CURRENCY", "FX"]
+    },
+    "war_conflict": {
+      "impact_path": "DXY can strengthen when geopolitical stress drives safe-haven flows into dollars and away from risk-sensitive currencies.",
+      "mechanism_terms": ["DOLLAR", "USD", "SAFE HAVEN", "RISK OFF", "GEOPOLITICAL", "CONFLICT", "CURRENCY", "FX"]
+    },
+    "inflation": {
+      "impact_path": "DXY reacts to inflation news when it changes the expected Fed path and relative policy support for the dollar.",
+      "mechanism_terms": ["DOLLAR", "USD", "INFLATION", "CPI", "PCE", "FED", "RATE", "CURRENCY", "FX"]
+    }
+  },
+  "NDX": {
+    "earnings": {
+      "impact_path": "NDX is most directly affected by mega-cap earnings, AI spending narratives, and tech-sector guidance repricing.",
+      "mechanism_terms": ["NASDAQ", "TECH", "MEGA CAP", "AI", "SEMIS", "EARNINGS", "GUIDANCE", "VALUATION"]
+    },
+    "interest_rates": {
+      "impact_path": "NDX is sensitive to discount-rate and real-yield repricing because long-duration tech cash flows are rate-sensitive.",
+      "mechanism_terms": ["NASDAQ", "TECH", "REAL YIELD", "DISCOUNT RATE", "RATES", "YIELD", "VALUATION", "SEMIS"]
+    },
+    "central_bank_policy": {
+      "impact_path": "NDX reacts to Fed policy when tighter financial conditions compress valuations for long-duration growth assets.",
+      "mechanism_terms": ["NASDAQ", "TECH", "FED", "POLICY", "RATES", "TIGHTER CONDITIONS", "VALUATION", "GROWTH"]
+    },
+    "growth_activity": {
+      "impact_path": "NDX can move on growth or activity shocks when they change risk appetite and expectations for tech demand.",
+      "mechanism_terms": ["NASDAQ", "TECH", "RISK APPETITE", "GROWTH", "ACTIVITY", "SOFT LANDING", "SEMIS"]
+    }
+  },
+  "SPX": {
+    "central_bank_policy": {
+      "impact_path": "SPX reacts to Fed policy through discount rates, financial conditions, and broad equity risk appetite.",
+      "mechanism_terms": ["S&P 500", "SPX", "WALL STREET", "FED", "POLICY", "RATES", "FINANCIAL CONDITIONS", "US STOCKS"]
+    },
+    "interest_rates": {
+      "impact_path": "SPX moves with broad rate-path repricing when Treasury yields and discount rates change equity valuations.",
+      "mechanism_terms": ["S&P 500", "SPX", "WALL STREET", "YIELDS", "TREASURY", "RATES", "DISCOUNT RATE", "US STOCKS"]
+    },
+    "growth_activity": {
+      "impact_path": "SPX can de-rate on growth or activity fears when the market questions demand, margins, or risk appetite.",
+      "mechanism_terms": ["S&P 500", "SPX", "WALL STREET", "GROWTH", "ACTIVITY", "ECONOMY", "US STOCKS", "RISK APPETITE"]
+    },
+    "earnings": {
+      "impact_path": "SPX is affected by earnings when results or guidance change expectations for broad index profits rather than a single name.",
+      "mechanism_terms": ["S&P 500", "SPX", "WALL STREET", "EARNINGS", "GUIDANCE", "PROFITS", "US STOCKS"]
+    },
+    "labour_market": {
+      "impact_path": "SPX reacts to labour-market news when jobs and wages alter growth expectations or the expected Fed path.",
+      "mechanism_terms": ["S&P 500", "SPX", "WALL STREET", "JOBS", "PAYROLLS", "WAGES", "LABOR", "US STOCKS"]
+    }
+  },
+  "BTC": {
+    "crypto_regulation": {
+      "impact_path": "BTC is most directly affected by regulation that changes exchange access, ETF demand, custody, or stablecoin plumbing.",
+      "mechanism_terms": ["BITCOIN", "BTC", "ETF", "EXCHANGE", "STABLECOIN", "CUSTODY", "TOKEN", "CRYPTO"]
+    },
+    "elections_policy": {
+      "impact_path": "Policy or election news matters to BTC when it changes the regulatory stance toward crypto markets.",
+      "mechanism_terms": ["BITCOIN", "BTC", "CRYPTO", "REGULATION", "ETF", "EXCHANGE", "STABLECOIN", "TOKEN"]
+    },
+    "banking_stress": {
+      "impact_path": "Banking stress affects BTC when it changes fiat onramps, custody confidence, or demand for non-bank assets.",
+      "mechanism_terms": ["BITCOIN", "BTC", "CRYPTO", "BANK", "CUSTODY", "STABLECOIN", "EXCHANGE"]
+    }
+  },
+  "BDI": {
+    "shipping_disruption": {
+      "impact_path": "BDI responds directly to freight-market bottlenecks, vessel availability, and route disruption.",
+      "mechanism_terms": ["BALTIC DRY", "DRY BULK", "FREIGHT", "VESSEL", "SHIPPING", "PORT", "BULK CARRIER"]
+    },
+    "growth_activity": {
+      "impact_path": "BDI also reflects shifts in global industrial demand for bulk commodities and shipping capacity.",
+      "mechanism_terms": ["BALTIC DRY", "DRY BULK", "IRON ORE", "COAL", "FREIGHT", "SHIPPING", "DEMAND"]
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "date": "2026-06-28",
+  "query": {
+    "view": "explain-move",
+    "asset_label": "WTI",
+    "start_date": "2026-06-05",
+    "end_date": "2026-06-05",
+    "limit": 10
+  },
+  "store": "http://127.0.0.1:8789",
+  "dataset_root": "/Users/jamiepearcey/projects/research/news-narrative-explainer/data/narrative_graph_parquet_v3",
+  "baseline_materialized_temp_tables": {
+    "runs": [
+      {
+        "seconds": 10.605244999998831,
+        "peak_python_bytes": 32310369,
+        "docs": 10,
+        "narratives": 6
+      },
+      {
+        "seconds": 10.097868167000343,
+        "peak_python_bytes": 850883,
+        "docs": 10,
+        "narratives": 6
+      },
+      {
+        "seconds": 10.12492525000016,
+        "peak_python_bytes": 844054,
+        "docs": 10,
+        "narratives": 6
+      }
+    ],
+    "avg_seconds": 10.276012805666445,
+    "avg_peak_python_bytes": 11335102
+  },
+  "direct_parquet_views_plus_deferred_payload": {
+    "runs": [
+      {
+        "seconds": 9.027894999999262,
+        "peak_python_bytes": 32317712,
+        "docs": 10,
+        "narratives": 6
+      },
+      {
+        "seconds": 5.3490603750015,
+        "peak_python_bytes": 851402,
+        "docs": 10,
+        "narratives": 6
+      },
+      {
+        "seconds": 4.8486167500013835,
+        "peak_python_bytes": 849564,
+        "docs": 10,
+        "narratives": 6
+      }
+    ],
+    "avg_seconds": 6.408524041667381,
+    "avg_peak_python_bytes": 11339559.333333334
+  },
+  "chunked_review_detail_with_doc_id_index": {
+    "explain_move_runs": [
+      3.1358807500000694,
+      2.3116087910002534,
+      2.3129118329998164,
+      2.4036099999993894,
+      2.3667314590002206
+    ],
+    "explain_move_avg_seconds": 2.5061485665999497,
+    "parts_avg_seconds": {
+      "narratives": 0.042898083600448444,
+      "timeline": 0.03919232500011276,
+      "supporting_docs": 1.1875189916001545
+    }
+  }
+}

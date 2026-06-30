@@ -1,0 +1,26 @@
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:25.6
+    container_name: news-narrative-v2-clickhouse
+    restart: unless-stopped
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    environment:
+      CLICKHOUSE_SKIP_USER_SETUP: "1"
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - clickhouse_logs:/var/log/clickhouse-server
+      - ./docker/clickhouse/config.d:/etc/clickhouse-server/config.d:ro
+      - ../data/gdelt_candidates_20d_full:/var/lib/clickhouse/user_files/gdelt_candidates_20d_full:ro
+      - ../data/gdelt_candidates:/var/lib/clickhouse/user_files/gdelt_candidates:ro
+    healthcheck:
+      test: ["CMD-SHELL", "clickhouse-client --query 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+volumes:
+  clickhouse_data:
+  clickhouse_logs:

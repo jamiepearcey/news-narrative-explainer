@@ -1,0 +1,777 @@
+{
+  "date": "2026-06-05",
+  "stage1": {
+    "explain_day": "Top narratives for 2026-06-05 across WTI, Gold, US2Y, US10Y, DXY, NDX, SPX:\nExplanatory fit ranking:\n1. jobs/Fed repricing + duration/fiscal-supply repricing + inflation-relief repricing: fit_score=783.855, provenance=direct-text, taxonomy-fallback, taxonomy-fallback, source_confidence=medium, medium, medium, source_weighting=unique_sources=1, market_wrap_docs=1, specialist_docs=0, direct_docs=1, proxy_docs=0 | unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0 | unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0, matched_assets=DXY, Gold, NDX, US10Y, US2Y, contradictions=none, unresolved=SPX, WTI, supporting_sources=[S1] [S2] [S3] [S4] [S5]\n2. jobs/Fed repricing + duration/fiscal-supply repricing + Fed policy repricing: fit_score=752.443, provenance=direct-text, taxonomy-fallback, direct-text, source_confidence=medium, medium, high, source_weighting=unique_sources=1, market_wrap_docs=1, specialist_docs=0, direct_docs=1, proxy_docs=0 | unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0 | unique_sources=2, market_wrap_docs=1, specialist_docs=1, direct_docs=2, proxy_docs=0, matched_assets=DXY, Gold, NDX, US10Y, US2Y, contradictions=none, unresolved=SPX, WTI, supporting_sources=[S1] [S2] [S3] [S6] [S7]\n3. jobs/Fed repricing + inflation-relief repricing + Fed policy repricing: fit_score=693.955, provenance=direct-text, taxonomy-fallback, direct-text, source_confidence=medium, medium, high, source_weighting=unique_sources=1, market_wrap_docs=1, specialist_docs=0, direct_docs=1, proxy_docs=0 | unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0 | unique_sources=2, market_wrap_docs=1, specialist_docs=1, direct_docs=2, proxy_docs=0, matched_assets=DXY, Gold, NDX, US10Y, US2Y, contradictions=none, unresolved=SPX, WTI, supporting_sources=[S1] [S4] [S5] [S6] [S7]\n4. jobs/Fed repricing + inflation-relief repricing: fit_score=596.575, provenance=direct-text, taxonomy-fallback, source_confidence=medium, medium, source_weighting=unique_sources=1, market_wrap_docs=1, specialist_docs=0, direct_docs=1, proxy_docs=0 | unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0, matched_assets=DXY, Gold, NDX, US10Y, US2Y, contradictions=none, unresolved=SPX, WTI, supporting_sources=[S1] [S4] [S5]\n5. duration/fiscal-supply repricing + inflation-relief repricing + Fed policy repricing: fit_score=575.452, provenance=taxonomy-fallback, taxonomy-fallback, direct-text, source_confidence=medium, medium, high, source_weighting=unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0 | unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0 | unique_sources=2, market_wrap_docs=1, specialist_docs=1, direct_docs=2, proxy_docs=0, matched_assets=DXY, Gold, NDX, US10Y, US2Y, contradictions=none, unresolved=SPX, WTI, supporting_sources=[S2] [S3] [S4] [S5] [S6]\nEvidence strength ranking:\n1. jobs/Fed repricing (labour_market): score=308.283, provenance=direct-text, source_diversity=1, source_confidence=medium, source_weighting=unique_sources=1, market_wrap_docs=1, specialist_docs=0, direct_docs=1, proxy_docs=0, affected_assets=DXY, supporting_sources=[S1]\n2. duration/fiscal-supply repricing (fiscal_debt): score=189.78, provenance=taxonomy-fallback, source_diversity=1, source_confidence=medium, source_weighting=unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0, affected_assets=DXY, supporting_sources=[S2], [S3]\n3. inflation-relief repricing (inflation): score=131.292, provenance=taxonomy-fallback, source_diversity=1, source_confidence=medium, source_weighting=unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0, affected_assets=DXY, supporting_sources=[S4], [S5]\n4. Fed policy repricing (central_bank_policy): score=98.38, provenance=direct-text, source_diversity=2, source_confidence=high, source_weighting=unique_sources=2, market_wrap_docs=1, specialist_docs=1, direct_docs=2, proxy_docs=0, affected_assets=DXY, supporting_sources=[S6], [S7]\nMarket impact ranking:\n1. jobs/Fed repricing (labour_market): impact_score=325.283, provenance=direct-text, source_confidence=medium, explained_assets=DXY, direct_support=DXY\n2. duration/fiscal-supply repricing (fiscal_debt): impact_score=216.78, provenance=taxonomy-fallback, source_confidence=medium, explained_assets=DXY, US10Y, direct_support=DXY\n3. inflation-relief repricing (inflation): impact_score=188.292, provenance=taxonomy-fallback, source_confidence=medium, explained_assets=DXY, Gold, NDX, US10Y, US2Y, direct_support=DXY\n4. Fed policy repricing (central_bank_policy): impact_score=157.38, provenance=direct-text, source_confidence=high, explained_assets=DXY, Gold, NDX, US10Y, US2Y, direct_support=DXY\nTransmission ranking:\n1. inflation-relief repricing (inflation): provenance=taxonomy-fallback; softer inflation narrative -> lower yields -> valuation relief unless another overlay blocks risk-on\n2. Fed policy repricing (central_bank_policy): provenance=direct-text; hawkish Fed repricing / relative policy support -> stronger dollar and pressure on duration and gold\nTrust summary:\nfit_confidence=1.0\ncontradiction_score=0.2\nunsupported_assets=Gold, NDX, SPX, US10Y, US2Y, WTI\nweakest_core_asset=WTI\nUnsupported / cannot answer: WTI (unresolved); Gold (unresolved); US2Y (unresolved); US10Y (unresolved); NDX (unresolved); SPX (unresolved).\nFailure mode: If stronger direct asset-specific evidence emerges for another factor, then this explanation should be downgraded to an overlay or discarded.\nReferences:\n[S1] https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html\n[S2] https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html\n[S3] https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html\n[S4] https://www.moneycontrol.com/news/business/markets/rbi-policy-experts-bet-on-top-8-stock-ideas-as-mpc-keeps-key-interest-rate-unchanged-13941684.html\n[S5] https://www.moneycontrol.com/news/business/markets/taking-stock-sensex-nifty-slip-in-volatile-trade-after-rbi-policy-banking-stocks-outperform-13942208.html\n[S6] https://www.moneycontrol.com/news/business/banks/waiting-is-also-a-strategy-and-the-rbi-is-proving-it-13942306.html\n[S7] http://www.kitco.com/opinion/2026-06-04/gold-surges-40-ceasefire-hopes",
+    "explain_cross_asset_move": "Cross-asset move for 2026-06-05 across WTI, Gold, US2Y, US10Y, DXY, NDX, SPX:\nBest explanatory combination: jobs/Fed repricing + duration/fiscal-supply repricing + inflation-relief repricing (evidence=combination-fit, fit_score=783.855, provenance=direct-text, taxonomy-fallback, taxonomy-fallback, source_confidence=medium, medium, medium, source_weighting=unique_sources=1, market_wrap_docs=1, specialist_docs=0, direct_docs=1, proxy_docs=0 | unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0 | unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0, matched_assets=DXY, Gold, NDX, US10Y, US2Y, contradictions=none, unresolved=SPX, WTI).\nShared narratives: none cleared the evidence threshold across multiple assets.\nConflicting narratives: WTI needed an unresolved indirect macro-wrap explanation (evidence=unresolved, provenance=unresolved, source=state-primary, context_substitution=no, substitution_reason=none, replaced=none, substitution_confidence=none, source_confidence=low); SPX needed an unresolved indirect macro-wrap explanation (evidence=unresolved, provenance=unresolved, source=state-primary, context_substitution=no, substitution_reason=none, replaced=none, substitution_confidence=none, source_confidence=low).\nTrust summary:\nfit_confidence=1.0\ncontradiction_score=0.2\nunsupported_assets=Gold, NDX, SPX, US10Y, US2Y, WTI\nweakest_core_asset=WTI\nUnsupported / cannot answer: WTI (unresolved); Gold (unresolved); US2Y (unresolved); US10Y (unresolved); NDX (unresolved); SPX (unresolved).\nConfidence by asset: WTI=direct=low, proxy/channel=low, transmission=low, overall=low; lower on generic graph-ranked factors without text confirmation; Gold=direct=low, proxy/channel=low, transmission=low, overall=low; lower on generic graph-ranked factors without text confirmation; US2Y=direct=low, proxy/channel=low, transmission=low, overall=low; lower on generic graph-ranked factors without text confirmation; US10Y=direct=low, proxy/channel=low, transmission=low, overall=low; lower on generic graph-ranked factors without text confirmation; DXY=direct=high, proxy/channel=low, transmission=high, overall=high; lower on generic graph-ranked factors without text confirmation; NDX=direct=low, proxy/channel=low, transmission=low, overall=low; lower on generic graph-ranked factors without text confirmation; SPX=direct=low, proxy/channel=low, transmission=low, overall=low; lower on generic graph-ranked factors without text confirmation.\nFailure mode: If direct WTI evidence emerges from asset-specific or macro-wrap articles, then the current unresolved classification is incomplete.",
+    "narrative_frame": {
+      "date": "2026-06-05",
+      "primary_regime": "labor/Fed repricing + duration/fiscal-supply repricing + inflation-relief impulse",
+      "primary_regime_raw": [
+        "jobs/Fed repricing",
+        "duration/fiscal-supply repricing",
+        "inflation-relief repricing"
+      ],
+      "first_link": "hawkish Fed repricing / relative policy support",
+      "transmission_chain": "hawkish Fed repricing / relative policy support -> stronger dollar and pressure on duration and gold",
+      "blocking_overlay": "Fed/dollar restraint remained an overlay on top of the primary regime",
+      "weakest_asset": "WTI",
+      "weakest_asset_reason": "If direct WTI evidence emerges from asset-specific or macro-wrap articles, then the current unresolved classification is incomplete.",
+      "unresolved_assets": [
+        "Gold",
+        "NDX",
+        "SPX",
+        "US10Y",
+        "US2Y",
+        "WTI"
+      ],
+      "consistency_warnings": [
+        "Do not present gold as strongly explained; direct support is weak in the current local slice."
+      ],
+      "confidence_summary": "Confidence is moderate: the primary regime fits well, but some assets remain unresolved in the local slice.",
+      "diagnostics": {
+        "fit_metric": 1.0,
+        "contradiction_metric": 0.2,
+        "matched_assets": [
+          "DXY",
+          "Gold",
+          "NDX",
+          "US10Y",
+          "US2Y"
+        ],
+        "contradictions": [],
+        "unresolved": [
+          "SPX",
+          "WTI"
+        ]
+      },
+      "dominant_narrative": {
+        "question": "What was the dominant market narrative today?",
+        "label": "labor/Fed repricing + duration/fiscal-supply repricing + inflation-relief impulse",
+        "raw_labels": [
+          "jobs/Fed repricing",
+          "duration/fiscal-supply repricing",
+          "inflation-relief repricing"
+        ],
+        "summary": "For 2026-06-05, the dominant market narrative was hawkish Fed repricing / relative policy support -> stronger dollar and pressure on duration and gold, while Fed/dollar restraint remained an overlay on top of the primary regime.",
+        "causal_chain": "hawkish Fed repricing / relative policy support -> stronger dollar and pressure on duration and gold",
+        "first_link": "hawkish Fed repricing / relative policy support",
+        "blocking_overlay": "Fed/dollar restraint remained an overlay on top of the primary regime",
+        "affected_assets": [
+          "DXY",
+          "Gold",
+          "NDX",
+          "US10Y",
+          "US2Y"
+        ],
+        "weakest_asset": "WTI",
+        "unresolved_assets": [
+          "Gold",
+          "NDX",
+          "SPX",
+          "US10Y",
+          "US2Y",
+          "WTI"
+        ],
+        "fit_metric": 1.0,
+        "contradiction_metric": 0.2,
+        "source_weight_breakdown": [
+          "unique_sources=1, market_wrap_docs=1, specialist_docs=0, direct_docs=1, proxy_docs=0",
+          "unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0",
+          "unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0"
+        ],
+        "supporting_references": [
+          "https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html",
+          "https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html",
+          "https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html",
+          "https://www.moneycontrol.com/news/business/markets/rbi-policy-experts-bet-on-top-8-stock-ideas-as-mpc-keeps-key-interest-rate-unchanged-13941684.html",
+          "https://www.moneycontrol.com/news/business/markets/taking-stock-sensex-nifty-slip-in-volatile-trade-after-rbi-policy-banking-stocks-outperform-13942208.html"
+        ]
+      },
+      "best_explanation": {
+        "question": "What was the single best explanation for today's cross-asset moves?",
+        "label": "labor/Fed repricing + duration/fiscal-supply repricing + inflation-relief impulse",
+        "raw_labels": [
+          "jobs/Fed repricing",
+          "duration/fiscal-supply repricing",
+          "inflation-relief repricing"
+        ],
+        "summary": "The single best explanation for the cross-asset move was hawkish Fed repricing / relative policy support -> stronger dollar and pressure on duration and gold, while Fed/dollar restraint remained an overlay on top of the primary regime.",
+        "best_fit_combination": "jobs/Fed repricing + duration/fiscal-supply repricing + inflation-relief repricing",
+        "market_fit_score": 783.855,
+        "evidence_strength_score": 308.283,
+        "transmission_plausibility": "hawkish Fed repricing / relative policy support -> stronger dollar and pressure on duration and gold",
+        "parallel_channels": [
+          {
+            "channel": "primary_transmission",
+            "factor_label": "central_bank_policy",
+            "narrative_label": "Fed policy repricing",
+            "chain": "hawkish Fed repricing / relative policy support -> stronger dollar and pressure on duration and gold",
+            "source_confidence": "high"
+          },
+          {
+            "channel": "blocking_overlay",
+            "factor_label": "central_bank_policy",
+            "narrative_label": "Fed/dollar restraint",
+            "chain": "Fed/dollar restraint remained an overlay on top of the primary regime",
+            "source_confidence": "high"
+          },
+          {
+            "channel": "weakly_resolved_parallel_leg",
+            "factor_label": "gold_precious",
+            "narrative_label": "dollar / real-rate pressure on gold",
+            "chain": "dollar / real-rate pressure -> weaker precious metals even if bonds rally",
+            "source_confidence": "low"
+          }
+        ],
+        "weakest_asset": "WTI",
+        "unresolved_assets": [
+          "Gold",
+          "NDX",
+          "SPX",
+          "US10Y",
+          "US2Y",
+          "WTI"
+        ],
+        "source_weight_breakdown": [
+          "unique_sources=1, market_wrap_docs=1, specialist_docs=0, direct_docs=1, proxy_docs=0",
+          "unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0",
+          "unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0"
+        ],
+        "supporting_references": [
+          "https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html",
+          "https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html",
+          "https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html",
+          "https://www.moneycontrol.com/news/business/markets/rbi-policy-experts-bet-on-top-8-stock-ideas-as-mpc-keeps-key-interest-rate-unchanged-13941684.html",
+          "https://www.moneycontrol.com/news/business/markets/taking-stock-sensex-nifty-slip-in-volatile-trade-after-rbi-policy-banking-stocks-outperform-13942208.html"
+        ]
+      },
+      "top_competing_hypotheses": [
+        {
+          "hypothesis": "Fed repricing",
+          "thesis": "Fed policy repricing was the primary driver, with oil weakness acting mainly through inflation expectations.",
+          "market_fit_score": 783.855,
+          "model_composition": [
+            "jobs/Fed repricing",
+            "duration/fiscal-supply repricing",
+            "inflation-relief repricing"
+          ],
+          "affected_assets": [
+            "DXY",
+            "Gold",
+            "NDX",
+            "US10Y",
+            "US2Y"
+          ],
+          "contradictions": [],
+          "unresolved_assets": [
+            "SPX",
+            "WTI"
+          ],
+          "source_weight_breakdown": [
+            "unique_sources=1, market_wrap_docs=1, specialist_docs=0, direct_docs=1, proxy_docs=0",
+            "unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0",
+            "unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0"
+          ],
+          "rank": 1,
+          "confidence": "High",
+          "explains": [
+            "dollar",
+            "rates"
+          ],
+          "weakness": "Under-explains oil.",
+          "why_it_fits": "Best explains WTI, Treasury yields, and the inflation channel while remaining consistent with the stronger dollar and only partial equity participation.",
+          "winner": true
+        },
+        {
+          "hypothesis": "Mixed macro repricing",
+          "thesis": "The session reflected a mixed macro repricing centered on duration/fiscal-supply repricing.",
+          "market_fit_score": 189.78,
+          "model_composition": [
+            "duration/fiscal-supply repricing"
+          ],
+          "affected_assets": [
+            "DXY"
+          ],
+          "contradictions": [],
+          "unresolved_assets": [],
+          "source_weight_breakdown": [
+            "unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0"
+          ],
+          "rank": 2,
+          "confidence": "Medium",
+          "explains": [
+            "DXY"
+          ],
+          "weakness": "Does not explain the full cross-asset pattern on its own.",
+          "why_it_fits": "Captures part of the session, but not the full cross-asset move as cleanly as the winner.",
+          "winner": false
+        },
+        {
+          "hypothesis": "Inflation relief",
+          "thesis": "Disinflationary news dominated the session, pulling yields lower and supporting only a partial risk response.",
+          "market_fit_score": 131.292,
+          "model_composition": [
+            "inflation-relief repricing"
+          ],
+          "affected_assets": [
+            "DXY"
+          ],
+          "contradictions": [],
+          "unresolved_assets": [],
+          "source_weight_breakdown": [
+            "unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0"
+          ],
+          "rank": 3,
+          "confidence": "Medium-Low",
+          "explains": [
+            "yields",
+            "inflation"
+          ],
+          "weakness": "Too clean to explain weaker commodities and incomplete equity relief on its own.",
+          "why_it_fits": "Fits the bond move, but on its own it is too clean for a session with weaker commodities and incomplete equity relief.",
+          "winner": false
+        }
+      ],
+      "rankings": {
+        "evidence_strength": [
+          {
+            "narrative_label": "jobs/Fed repricing",
+            "factor_label": "labour_market",
+            "score": 308.283,
+            "source_confidence": "medium",
+            "source_weighting": "unique_sources=1, market_wrap_docs=1, specialist_docs=0, direct_docs=1, proxy_docs=0",
+            "affected_assets": [
+              "DXY"
+            ],
+            "supporting_urls": [
+              "https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html"
+            ]
+          },
+          {
+            "narrative_label": "duration/fiscal-supply repricing",
+            "factor_label": "fiscal_debt",
+            "score": 189.78,
+            "source_confidence": "medium",
+            "source_weighting": "unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0",
+            "affected_assets": [
+              "DXY"
+            ],
+            "supporting_urls": [
+              "https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html",
+              "https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html"
+            ]
+          },
+          {
+            "narrative_label": "inflation-relief repricing",
+            "factor_label": "inflation",
+            "score": 131.292,
+            "source_confidence": "medium",
+            "source_weighting": "unique_sources=1, market_wrap_docs=2, specialist_docs=0, direct_docs=2, proxy_docs=0",
+            "affected_assets": [
+              "DXY"
+            ],
+            "supporting_urls": [
+              "https://www.moneycontrol.com/news/business/markets/rbi-policy-experts-bet-on-top-8-stock-ideas-as-mpc-keeps-key-interest-rate-unchanged-13941684.html",
+              "https://www.moneycontrol.com/news/business/markets/taking-stock-sensex-nifty-slip-in-volatile-trade-after-rbi-policy-banking-stocks-outperform-13942208.html"
+            ]
+          },
+          {
+            "narrative_label": "Fed policy repricing",
+            "factor_label": "central_bank_policy",
+            "score": 98.38,
+            "source_confidence": "high",
+            "source_weighting": "unique_sources=2, market_wrap_docs=1, specialist_docs=1, direct_docs=2, proxy_docs=0",
+            "affected_assets": [
+              "DXY"
+            ],
+            "supporting_urls": [
+              "https://www.moneycontrol.com/news/business/banks/waiting-is-also-a-strategy-and-the-rbi-is-proving-it-13942306.html",
+              "http://www.kitco.com/opinion/2026-06-04/gold-surges-40-ceasefire-hopes"
+            ]
+          }
+        ],
+        "market_impact": [
+          {
+            "narrative_label": "jobs/Fed repricing",
+            "factor_label": "labour_market",
+            "impact_score": 325.283,
+            "source_confidence": "medium",
+            "explained_assets": [
+              "DXY"
+            ],
+            "direct_support": [
+              "DXY"
+            ]
+          },
+          {
+            "narrative_label": "duration/fiscal-supply repricing",
+            "factor_label": "fiscal_debt",
+            "impact_score": 216.78,
+            "source_confidence": "medium",
+            "explained_assets": [
+              "DXY",
+              "US10Y"
+            ],
+            "direct_support": [
+              "DXY"
+            ]
+          },
+          {
+            "narrative_label": "inflation-relief repricing",
+            "factor_label": "inflation",
+            "impact_score": 188.292,
+            "source_confidence": "medium",
+            "explained_assets": [
+              "DXY",
+              "Gold",
+              "NDX",
+              "US10Y",
+              "US2Y"
+            ],
+            "direct_support": [
+              "DXY"
+            ]
+          },
+          {
+            "narrative_label": "Fed policy repricing",
+            "factor_label": "central_bank_policy",
+            "impact_score": 157.38,
+            "source_confidence": "high",
+            "explained_assets": [
+              "DXY",
+              "Gold",
+              "NDX",
+              "US10Y",
+              "US2Y"
+            ],
+            "direct_support": [
+              "DXY"
+            ]
+          }
+        ],
+        "transmission_plausibility": [
+          {
+            "narrative_label": "inflation-relief repricing",
+            "factor_label": "inflation",
+            "chain": "softer inflation narrative -> lower yields -> valuation relief unless another overlay blocks risk-on",
+            "source_confidence": "medium"
+          },
+          {
+            "narrative_label": "Fed policy repricing",
+            "factor_label": "central_bank_policy",
+            "chain": "hawkish Fed repricing / relative policy support -> stronger dollar and pressure on duration and gold",
+            "source_confidence": "high"
+          }
+        ]
+      },
+      "market_impact_rows": [
+        {
+          "narrative_label": "jobs/Fed repricing",
+          "factor_label": "labour_market",
+          "impact_score": 325.283,
+          "explained_assets": [
+            "DXY"
+          ],
+          "source_confidence": "medium"
+        },
+        {
+          "narrative_label": "duration/fiscal-supply repricing",
+          "factor_label": "fiscal_debt",
+          "impact_score": 216.78,
+          "explained_assets": [
+            "DXY",
+            "US10Y"
+          ],
+          "source_confidence": "medium"
+        },
+        {
+          "narrative_label": "inflation-relief repricing",
+          "factor_label": "inflation",
+          "impact_score": 188.292,
+          "explained_assets": [
+            "DXY",
+            "Gold",
+            "NDX",
+            "US10Y",
+            "US2Y"
+          ],
+          "source_confidence": "medium"
+        },
+        {
+          "narrative_label": "Fed policy repricing",
+          "factor_label": "central_bank_policy",
+          "impact_score": 157.38,
+          "explained_assets": [
+            "DXY",
+            "Gold",
+            "NDX",
+            "US10Y",
+            "US2Y"
+          ],
+          "source_confidence": "high"
+        }
+      ],
+      "transmission_rows": [
+        {
+          "narrative_label": "inflation-relief repricing",
+          "factor_label": "inflation",
+          "chain": "softer inflation narrative -> lower yields -> valuation relief unless another overlay blocks risk-on",
+          "source_confidence": "medium"
+        },
+        {
+          "narrative_label": "Fed policy repricing",
+          "factor_label": "central_bank_policy",
+          "chain": "hawkish Fed repricing / relative policy support -> stronger dollar and pressure on duration and gold",
+          "source_confidence": "high"
+        }
+      ],
+      "supporting_references": [
+        "https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html",
+        "https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html",
+        "https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html",
+        "https://www.moneycontrol.com/news/business/markets/rbi-policy-experts-bet-on-top-8-stock-ideas-as-mpc-keeps-key-interest-rate-unchanged-13941684.html",
+        "https://www.moneycontrol.com/news/business/markets/taking-stock-sensex-nifty-slip-in-volatile-trade-after-rbi-policy-banking-stocks-outperform-13942208.html"
+      ]
+    },
+    "contradictory_text": "Dominant narrative for 2026-06-05: jobs/Fed repricing + duration/fiscal-supply repricing + inflation-relief repricing (labour_market, fiscal_debt, inflation) matching DXY, Gold, NDX, US10Y, US2Y (fit_score=783.855, provenance=direct-text, taxonomy-fallback, taxonomy-fallback, source_confidence=medium, medium, medium).\nExpected responses: assets explained by the best-fit narrative combination should align first; others need an overlay or remain unresolved.\n- WTI: contradiction to dominant narrative. Required overlay=an unresolved indirect macro-wrap explanation. Overlay evidence=unresolved. Overlay provenance=unresolved. Overlay source=state-primary. Overlay context_substitution=no. Overlay substitution_reason=none. Overlay replaced=none. Overlay substitution_confidence=none. Overlay source_confidence=low. Confidence=direct=low, proxy/channel=low, transmission=low, overall=low; lower on generic graph-ranked factors without text confirmation.\n  Failure mode: If direct WTI evidence emerges from asset-specific or macro-wrap articles, then the current unresolved classification is incomplete.\n- SPX: contradiction to dominant narrative. Required overlay=an unresolved indirect macro-wrap explanation. Overlay evidence=unresolved. Overlay provenance=unresolved. Overlay source=state-primary. Overlay context_substitution=no. Overlay substitution_reason=none. Overlay replaced=none. Overlay substitution_confidence=none. Overlay source_confidence=low. Confidence=direct=low, proxy/channel=low, transmission=low, overall=low; lower on generic graph-ranked factors without text confirmation.\n  Failure mode: If direct SPX evidence emerges from asset-specific or macro-wrap articles, then the current unresolved classification is incomplete.",
+    "trust": {
+      "explain_day": {
+        "fit_confidence": 1.0,
+        "contradiction_score": 0.2,
+        "unsupported_assets": [
+          "Gold",
+          "NDX",
+          "SPX",
+          "US10Y",
+          "US2Y",
+          "WTI"
+        ],
+        "weakest_core_asset": "WTI",
+        "cannot_answer": [
+          "WTI (unresolved)",
+          "Gold (unresolved)",
+          "US2Y (unresolved)",
+          "US10Y (unresolved)",
+          "NDX (unresolved)",
+          "SPX (unresolved)"
+        ]
+      },
+      "explain_cross_asset_move": {
+        "fit_confidence": 1.0,
+        "contradiction_score": 0.2,
+        "unsupported_assets": [
+          "Gold",
+          "NDX",
+          "SPX",
+          "US10Y",
+          "US2Y",
+          "WTI"
+        ],
+        "weakest_core_asset": "WTI",
+        "cannot_answer": [
+          "WTI (unresolved)",
+          "Gold (unresolved)",
+          "US2Y (unresolved)",
+          "US10Y (unresolved)",
+          "NDX (unresolved)",
+          "SPX (unresolved)"
+        ]
+      }
+    },
+    "claims": [
+      {
+        "claim_type": "best_fit_combination",
+        "date": "2026-06-05",
+        "label": "jobs/Fed repricing + duration/fiscal-supply repricing + inflation-relief repricing",
+        "fit_score": "783.855",
+        "matched_assets": "DXY, Gold, NDX, US10Y, US2Y",
+        "contradictions": "none",
+        "fit_confidence": 1.0,
+        "contradiction_score": 0.2,
+        "unsupported_assets": [
+          "Gold",
+          "NDX",
+          "SPX",
+          "US10Y",
+          "US2Y",
+          "WTI"
+        ],
+        "query": "2026-06-05 inflation relief oil yields disinflation markets oil dollar yields stocks",
+        "supporting_urls": [
+          "https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html",
+          "https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html",
+          "https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html",
+          "https://www.moneycontrol.com/news/business/markets/rbi-policy-experts-bet-on-top-8-stock-ideas-as-mpc-keeps-key-interest-rate-unchanged-13941684.html",
+          "https://www.moneycontrol.com/news/business/markets/taking-stock-sensex-nifty-slip-in-volatile-trade-after-rbi-policy-banking-stocks-outperform-13942208.html"
+        ]
+      },
+      {
+        "claim_type": "weakest_core_asset",
+        "date": "2026-06-05",
+        "label": "WTI",
+        "fit_confidence": 1.0,
+        "contradiction_score": 0.2,
+        "unsupported_assets": [
+          "Gold",
+          "NDX",
+          "SPX",
+          "US10Y",
+          "US2Y",
+          "WTI"
+        ],
+        "query": "2026-06-05 WTI crude oil oil prices weak despite lower yields oil lower",
+        "supporting_urls": [
+          "https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html",
+          "https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html",
+          "https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html"
+        ]
+      },
+      {
+        "claim_type": "evidence_ranked_narrative",
+        "date": "2026-06-05",
+        "label": "jobs/Fed repricing",
+        "factor": "labour_market",
+        "score": "308.283",
+        "query": "2026-06-05 jobs repricing Reuters AP market",
+        "supporting_urls": [
+          "https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html",
+          "https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html",
+          "https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html"
+        ]
+      },
+      {
+        "claim_type": "evidence_ranked_narrative",
+        "date": "2026-06-05",
+        "label": "duration/fiscal-supply repricing",
+        "factor": "fiscal_debt",
+        "score": "189.78",
+        "query": "2026-06-05 duration fiscal supply repricing Reuters AP market",
+        "supporting_urls": [
+          "https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html",
+          "https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html",
+          "https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html"
+        ]
+      },
+      {
+        "claim_type": "evidence_ranked_narrative",
+        "date": "2026-06-05",
+        "label": "inflation-relief repricing",
+        "factor": "inflation",
+        "score": "131.292",
+        "query": "2026-06-05 inflation relief oil yields disinflation inflation disinflation oil prices yields Reuters AP market",
+        "supporting_urls": [
+          "https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html",
+          "https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html",
+          "https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html"
+        ]
+      }
+    ]
+  },
+  "stage2": [
+    {
+      "claim_type": "best_fit_combination",
+      "date": "2026-06-05",
+      "label": "jobs/Fed repricing + duration/fiscal-supply repricing + inflation-relief repricing",
+      "fit_score": "783.855",
+      "matched_assets": "DXY, Gold, NDX, US10Y, US2Y",
+      "contradictions": "none",
+      "fit_confidence": 1.0,
+      "contradiction_score": 0.2,
+      "unsupported_assets": [
+        "Gold",
+        "NDX",
+        "SPX",
+        "US10Y",
+        "US2Y",
+        "WTI"
+      ],
+      "query": "2026-06-05 inflation relief oil yields disinflation markets oil dollar yields stocks",
+      "supporting_urls": [
+        "https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html",
+        "https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html",
+        "https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html",
+        "https://www.moneycontrol.com/news/business/markets/rbi-policy-experts-bet-on-top-8-stock-ideas-as-mpc-keeps-key-interest-rate-unchanged-13941684.html",
+        "https://www.moneycontrol.com/news/business/markets/taking-stock-sensex-nifty-slip-in-volatile-trade-after-rbi-policy-banking-stocks-outperform-13942208.html"
+      ],
+      "expanded_queries": [
+        "2026-06-05 inflation relief oil yields disinflation markets oil dollar yields stocks"
+      ],
+      "validation_mode": "local_hybrid_first",
+      "validation": {
+        "claim_type": "best_fit_combination",
+        "label": "jobs/Fed repricing + duration/fiscal-supply repricing + inflation-relief repricing",
+        "status": "contradicted",
+        "keywords": [
+          "inflation",
+          "relief",
+          "yields",
+          "disinflation"
+        ],
+        "supporting_results": [],
+        "fit_confidence": 1.0,
+        "contradiction_score": 0.2
+      }
+    },
+    {
+      "claim_type": "weakest_core_asset",
+      "date": "2026-06-05",
+      "label": "WTI",
+      "fit_confidence": 1.0,
+      "contradiction_score": 0.2,
+      "unsupported_assets": [
+        "Gold",
+        "NDX",
+        "SPX",
+        "US10Y",
+        "US2Y",
+        "WTI"
+      ],
+      "query": "2026-06-05 WTI crude oil oil prices weak despite lower yields oil lower",
+      "supporting_urls": [
+        "https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html",
+        "https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html",
+        "https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html"
+      ],
+      "expanded_queries": [
+        "2026-06-05 WTI crude oil oil prices weak despite lower yields oil lower"
+      ],
+      "validation_mode": "local_hybrid_first",
+      "validation": {
+        "claim_type": "weakest_core_asset",
+        "label": "WTI",
+        "status": "mcp_unresolved",
+        "keywords": [],
+        "supporting_results": [],
+        "reason": "WTI is explicitly unresolved in the MCP trust block",
+        "fit_confidence": 1.0,
+        "contradiction_score": 0.2
+      }
+    },
+    {
+      "claim_type": "evidence_ranked_narrative",
+      "date": "2026-06-05",
+      "label": "jobs/Fed repricing",
+      "factor": "labour_market",
+      "score": "308.283",
+      "query": "2026-06-05 jobs repricing Reuters AP market",
+      "supporting_urls": [
+        "https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html",
+        "https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html",
+        "https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html"
+      ],
+      "expanded_queries": [
+        "2026-06-05 jobs repricing Reuters AP market"
+      ],
+      "validation_mode": "local_hybrid_first",
+      "validation": {
+        "claim_type": "evidence_ranked_narrative",
+        "label": "jobs/Fed repricing",
+        "status": "unsupported",
+        "keywords": [
+          "jobs",
+          "repricing"
+        ],
+        "supporting_results": [],
+        "fit_confidence": null,
+        "contradiction_score": null
+      }
+    },
+    {
+      "claim_type": "evidence_ranked_narrative",
+      "date": "2026-06-05",
+      "label": "duration/fiscal-supply repricing",
+      "factor": "fiscal_debt",
+      "score": "189.78",
+      "query": "2026-06-05 duration fiscal supply repricing Reuters AP market",
+      "supporting_urls": [
+        "https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html",
+        "https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html",
+        "https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html"
+      ],
+      "expanded_queries": [
+        "2026-06-05 duration fiscal supply repricing Reuters AP market"
+      ],
+      "validation_mode": "local_hybrid_first",
+      "validation": {
+        "claim_type": "evidence_ranked_narrative",
+        "label": "duration/fiscal-supply repricing",
+        "status": "unsupported",
+        "keywords": [
+          "duration",
+          "fiscal",
+          "supply",
+          "repricing"
+        ],
+        "supporting_results": [],
+        "fit_confidence": null,
+        "contradiction_score": null
+      }
+    },
+    {
+      "claim_type": "evidence_ranked_narrative",
+      "date": "2026-06-05",
+      "label": "inflation-relief repricing",
+      "factor": "inflation",
+      "score": "131.292",
+      "query": "2026-06-05 inflation relief oil yields disinflation inflation disinflation oil prices yields Reuters AP market",
+      "supporting_urls": [
+        "https://www.moneycontrol.com/news/business/personal-finance/gold-and-silver-price-today-june-5-check-rates-of-24k-22k-gold-in-delhi-mumbai-kolkata-other-cities-13941740.html",
+        "https://www.moneycontrol.com/news/opinion/rupee-at-100-just-a-number-13941545.html",
+        "https://www.moneycontrol.com/news/business/govt-rbi-unleash-bazooka-to-support-rupee-lift-inflows-13942108.html"
+      ],
+      "expanded_queries": [
+        "2026-06-05 inflation relief oil yields disinflation inflation disinflation oil prices yields Reuters AP market"
+      ],
+      "validation_mode": "local_hybrid_first",
+      "validation": {
+        "claim_type": "evidence_ranked_narrative",
+        "label": "inflation-relief repricing",
+        "status": "refined",
+        "keywords": [
+          "inflation",
+          "relief",
+          "yields",
+          "disinflation",
+          "prices"
+        ],
+        "supporting_results": [
+          {
+            "url": "http://www.parisguardian.com/news/279103324/rbi-projects-hike-in-fy27-consumer-price-index-inflation-at-51-amid-elevated-global-crude-prices",
+            "title": "http://www.parisguardian.com/news/279103324/rbi-projects-hike-in-fy27-consumer-price-index-inflation-at-51-amid-elevated-global-crude-prices",
+            "hits": 2,
+            "negative_hits": 0,
+            "score": 0.5665218894117647,
+            "query": "2026-06-05 inflation relief oil yields disinflation inflation disinflation oil prices yields Reuters AP market",
+            "source_type": "general_news",
+            "source_domain": "parisguardian.com",
+            "citation": "http://www.parisguardian.com/news/279103324/rbi-projects-hike-in-fy27-consumer-price-index-inflation-at-51-amid-elevated-global-crude-prices"
+          },
+          {
+            "url": "https://www.forbes.com/sites/gauravsharma/2026/06/05/oil-prices-end-the-week-lower-on-us-iran-diplomatic-moves/",
+            "title": "https://www.forbes.com/sites/gauravsharma/2026/06/05/oil-prices-end-the-week-lower-on-us-iran-diplomatic-moves/",
+            "hits": 1,
+            "negative_hits": 0,
+            "score": 0.760994040909091,
+            "query": "2026-06-05 inflation relief oil yields disinflation inflation disinflation oil prices yields Reuters AP market",
+            "source_type": "general_news",
+            "source_domain": "forbes.com",
+            "citation": "https://www.forbes.com/sites/gauravsharma/2026/06/05/oil-prices-end-the-week-lower-on-us-iran-diplomatic-moves/"
+          },
+          {
+            "url": "https://www.livemint.com/market/oil-prices-fall-on-mounting-hopes-for-de-escalation-in-us-iran-war-11780687079949.html",
+            "title": "https://www.livemint.com/market/oil-prices-fall-on-mounting-hopes-for-de-escalation-in-us-iran-war-11780687079949.html",
+            "hits": 1,
+            "negative_hits": 0,
+            "score": 0.5547179133333333,
+            "query": "2026-06-05 inflation relief oil yields disinflation inflation disinflation oil prices yields Reuters AP market",
+            "source_type": "general_news",
+            "source_domain": "livemint.com",
+            "citation": "https://www.livemint.com/market/oil-prices-fall-on-mounting-hopes-for-de-escalation-in-us-iran-war-11780687079949.html"
+          }
+        ],
+        "fit_confidence": null,
+        "contradiction_score": null
+      }
+    }
+  ]
+}
